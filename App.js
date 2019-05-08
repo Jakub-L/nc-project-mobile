@@ -1,27 +1,23 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import BasicARScene from "./components/BasicARScene";
-import AddPinScreen from "./components/AddPinScreen";
-import AddPhotoScreen from "./components/AddPhotoScreen";
+import React from 'react';
+import {
+  Button, Image, Text, View,
+} from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import WelcomeScreenStyle from './styles/WelcomeScreen-style';
+import * as arup from './styles/arupStyles';
+import logo from './assets/logo-white-large.png';
+import {
+  BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen,
+} from './components';
 
-class HomeScreen extends React.Component {
+class WelcomeScreen extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Home Screen</Text>
-        <Button
-          title="I am a pin"
-          onPress={() => this.props.navigation.navigate("Pin")}
-        />
-        <Button
-          title="Go to AR"
-          onPress={() => this.props.navigation.navigate("AR")}
-        />
-        <Button
-          title="Add Pin"
-          onPress={() => this.props.navigation.navigate("AddPin")}
-        />
+      <View style={WelcomeScreenStyle.container}>
+        <Image source={logo} />
+        <Text>Welcome Screen</Text>
+        <Button title="Go Home" onPress={() => navigation.navigate('Home')} />
       </View>
     );
   }
@@ -29,24 +25,22 @@ class HomeScreen extends React.Component {
 
 const AppNavigator = createStackNavigator(
   {
+    Welcome: WelcomeScreen,
     Home: HomeScreen,
     Pin: AddPinScreen,
     AddPin: AddPinScreen,
     AR: BasicARScene,
-    AddPhoto: AddPhotoScreen
+    AddPhoto: AddPhotoScreen,
   },
   {
-    initialRouteName: "Home"
-  }
+    initialRouteName: 'Welcome',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#28aae1',
+      },
+      headerTintColor: '#ffffff',
+    },
+  },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
 
 export default createAppContainer(AppNavigator);
