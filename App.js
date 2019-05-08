@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import StaticARScene from "./components/StaticARScene";
+import BasicARScene from "./components/BasicARScene";
 import AddPinScreen from "./components/AddPinScreen";
 import AddPhotoScreen from "./components/AddPhotoScreen";
 
@@ -32,7 +32,7 @@ const AppNavigator = createStackNavigator(
     Home: HomeScreen,
     Pin: AddPinScreen,
     AddPin: AddPinScreen,
-    AR: StaticARScene,
+    AR: BasicARScene,
     AddPhoto: AddPhotoScreen
   },
   {
