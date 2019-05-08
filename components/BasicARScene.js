@@ -56,10 +56,10 @@ export default class BasicARScene extends React.Component {
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
     // Make a cube - notice that each unit is 1 meter in real life, we will make our box 0.1 meters
-    const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+    const geometry = new THREE.ConeGeometry(0.05, -0.2, 32, 1, false, -3);
     // Simple color material
     const material = new THREE.MeshPhongMaterial({
-      color: 0xff00ff
+      color: 0xff0800
     });
 
     // Combine our geometry and material
