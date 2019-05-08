@@ -8,4 +8,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: arup.blueBg,
   },
+  appName: {
+    fontFamily: 'times-new-roman',
+  },
 });
