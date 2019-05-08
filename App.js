@@ -26,7 +26,7 @@ class WelcomeScreen extends React.Component {
     return (
       <View style={welcomeScreenStyle.container}>
         <Image source={logo} />
-        {this.state.fontLoaded ? <Text style={welcomeScreenStyle.appName}>Welcome Screen</Text> : null}
+        {this.state.fontLoaded ? <Text style={welcomeScreenStyle.appName}>SiteSeeing</Text> : null}
         <Button title="Go Home" onPress={() => navigation.navigate('Home')} />
       </View>
     );
