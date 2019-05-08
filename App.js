@@ -2,19 +2,22 @@ import React from 'react';
 import {
   Button, Image, Text, View,
 } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import WelcomeScreenStyle from './styles/WelcomeScreen-style';
-import * as arup from './styles/arupStyles';
+import { createStackNavigator, createAppContainer, Icon } from 'react-navigation';
+import welcomeScreenStyle from './styles/WelcomeScreen-style';
+import navigatorStyle from './styles/Navigator-style';
 import logo from './assets/logo-white-large.png';
 import {
   BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen,
 } from './components';
+import arupStyles from './styles/arupStyles';
 
 class WelcomeScreen extends React.Component {
+  static navigationOptions = { headerMode: 'none', headerStyle: { backgroundColor: arupStyles.blueBg } }
+
   render() {
     const { navigation } = this.props;
     return (
-      <View style={WelcomeScreenStyle.container}>
+      <View style={welcomeScreenStyle.container}>
         <Image source={logo} />
         <Text>Welcome Screen</Text>
         <Button title="Go Home" onPress={() => navigation.navigate('Home')} />
@@ -34,11 +37,11 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Welcome',
+
     defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: '#28aae1',
-      },
-      headerTintColor: '#ffffff',
+      headerTransparent: true,
+      headerTintColor: arupStyles.white,
+      headerStyle: navigatorStyle.header,
     },
   },
 );
