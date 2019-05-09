@@ -8,11 +8,19 @@ export default class Map extends React.Component {
         location: {coords: { latitude: 37.78825, longitude: -122.4324}},
         markers : [
             {
+            id:1,
               latitude: 53.811434,
               longitude: -1.566018,
               title: 'Fake Place',
               subtitle: 'Hello'
-            }
+            }, 
+            {
+                id:2,
+                latitude: 53.8,
+                longitude: -1.5,
+                title: 'Fake Place 2',
+                subtitle: 'Electric Fakealoo'
+              }
           ]
       };
   render() {
@@ -24,14 +32,17 @@ export default class Map extends React.Component {
       // onRegionChangeComplete={this._handleMapRegionChange}
       // onPanDrag={this._handleDrag}
       >
-<MapView.Marker
-coordinate={{latitude: 53.811434,
-    longitude: -1.566018}}
-    title={"Fake Place"}
-    description={"Fraser"}
+      {this.state.markers.map(marker => (
+        <MapView.Marker
+        key={marker.id}
+coordinate={{latitude: marker.latitude,
+    longitude: marker.longitude}}
+    title={marker.title}
+    description={marker.subtitle}
 >
-
 </MapView.Marker>
+      ))}
+
       </MapView>
     );
   }
