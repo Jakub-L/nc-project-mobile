@@ -28,7 +28,9 @@ coordinate={{latitude: Number(pin.latitude),
     longitude: Number(pin.longitude)}}
     title={pin.creator}
     description={pin.timestamp}
-    onPress={() => this.props.navigation.navigate("Pin")}
+    onPress={() => this.props.navigation.navigate("Pin", {
+      pin: pin
+    })}
 >
 </MapView.Marker>
       ))}
