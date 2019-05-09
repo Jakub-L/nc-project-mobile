@@ -1,26 +1,15 @@
 import React from 'react';
 import { MapView, Location, Permissions, Marker } from 'expo';
 
+import * as api from "../api";
+
 export default class Map extends React.Component {
     state = {
         mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
         locationResult: null,
         location: {coords: { latitude: 37.78825, longitude: -122.4324}},
-        markers : [
-            {
-            id:1,
-              latitude: 53.811434,
-              longitude: -1.566018,
-              title: 'Fake Place',
-              subtitle: 'Hello'
-            }, 
-            {
-                id:2,
-                latitude: 53.8,
-                longitude: -1.5,
-                title: 'Fake Place 2',
-                subtitle: 'Electric Fakealoo'
-              }
+        markers: [],
+        pins : [
           ]
       };
   render() {
@@ -32,13 +21,13 @@ export default class Map extends React.Component {
       // onRegionChangeComplete={this._handleMapRegionChange}
       // onPanDrag={this._handleDrag}
       >
-      {this.state.markers.map(marker => (
+      {this.state.pins.map(pin => (
         <MapView.Marker
-        key={marker.id}
-coordinate={{latitude: marker.latitude,
-    longitude: marker.longitude}}
-    title={marker.title}
-    description={marker.subtitle}
+        key={pin.pin_id}
+coordinate={{latitude: Number(pin.latitude),
+    longitude: Number(pin.longitude)}}
+    title={pin.title}
+    description={pin.subtitle}
 >
 </MapView.Marker>
       ))}
@@ -49,6 +38,7 @@ coordinate={{latitude: marker.latitude,
 
   componentDidMount() {
     this._getLocationAsync();
+    this.fetchPins();
   }
 
 //   _handleMapRegionChange = mapRegion => {
@@ -72,7 +62,10 @@ coordinate={{latitude: marker.latitude,
     this.setState({ locationResult: JSON.stringify(location), location, });
   };
 
-
+  fetchPins = () => {
+    api.getPins().then(pins => this.setState({ pins })).then(console.log(this.state.pins))
+  
+  };
 
 
 }
