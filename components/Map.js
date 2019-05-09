@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapView, Location, Permissions, Marker } from 'expo';
+import { MapView, Location, Permissions, Marker, TouchableHighlight, View, Text } from 'expo';
 
 import * as api from "../api";
 
@@ -26,8 +26,9 @@ export default class Map extends React.Component {
         key={pin.pin_id}
 coordinate={{latitude: Number(pin.latitude),
     longitude: Number(pin.longitude)}}
-    title={pin.title}
-    description={pin.subtitle}
+    title={pin.creator}
+    description={pin.timestamp}
+    onPress={() => this.props.navigation.navigate("Pin")}
 >
 </MapView.Marker>
       ))}
@@ -64,7 +65,11 @@ coordinate={{latitude: Number(pin.latitude),
 
   fetchPins = () => {
     api.getPins().then(pins => this.setState({ pins })).then(console.log(this.state.pins))
-  
+  };
+
+  pinClick = () => {
+      console.log('Working')
+    // () => this.props.navigation.navigate("Pin")
   };
 
 

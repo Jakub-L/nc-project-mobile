@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import BasicARScene from "./components/BasicARScene";
 import AddPinScreen from "./components/AddPinScreen";
+import PinScreen from "./components/PinScreen";
 import AddPhotoScreen from "./components/AddPhotoScreen";
 import Map from './components/Map'
 
@@ -11,7 +12,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Map style={{ flex: 1, alignItems: "center", justifyContent: "center" }} ></Map>
+        <Map style={{ flex: 1, alignItems: "center", justifyContent: "center" }} navigation={this.props.navigation}></Map>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
         <Text>Home Screen</Text>
         <Button
@@ -35,7 +36,7 @@ class HomeScreen extends React.Component {
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Pin: AddPinScreen,
+    Pin: PinScreen,
     AddPin: AddPinScreen,
     AR: BasicARScene,
     AddPhoto: AddPhotoScreen
