@@ -1,15 +1,15 @@
-function degreesToRadians(degrees) {
-  return (degrees * Math.PI) / 180;
-}
-
-function relativePhotoDirectionsFromPhone() {
-  let heading = 0;
-  let lat1 = "39.099912";
-  let lon1 = "-94.581213";
-  let lat2 = "38.627089";
-  let lon2 = "-90.200203";
+function relativePhotoDirectionsFromPhone(lat1, lon1, lat2, lon2, heading) {
+  //   let heading = 0;
+  //   let lat1 = "39.099912";
+  //   let lon1 = "-94.581213";
+  //   let lat2 = "38.627089";
+  //   let lon2 = "-90.200203";
 
   const earthRadiusm = 6371000;
+
+  function degreesToRadians(degrees) {
+    return (degrees * Math.PI) / 180;
+  }
 
   const dLat = degreesToRadians(lat2 - lat1);
   const dLon = degreesToRadians(lon2 - lon1);
@@ -27,7 +27,7 @@ function relativePhotoDirectionsFromPhone() {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distancem = earthRadiusm * c;
-  console.log(distancem, "<--- distance from phone to photo");
+  //   console.log(distancem, "<--- distance from phone to photo");
 
   //ANGLE of photo from true north
 
@@ -37,7 +37,7 @@ function relativePhotoDirectionsFromPhone() {
     Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2);
   let angle = (Math.atan2(x, y) * 180) / Math.PI;
   angle < 0 ? (angle += 360) : angle;
-  console.log(angle, "<--- angle from true north");
+  //   console.log(angle, "<--- angle from true north");
 
   //relative distance from phone to photo
 
@@ -53,4 +53,4 @@ function relativePhotoDirectionsFromPhone() {
   return relativeDirections;
 }
 
-relativePhotoDirectionsFromPhone();
+export default relativePhotoDirectionsFromPhone;
