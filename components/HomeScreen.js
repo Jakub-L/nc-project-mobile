@@ -47,14 +47,17 @@ class HomeScreen extends React.Component {
       </View>
     );
   }
-
   componentDidMount() {
     this.fetchPins();
   }
 
   fetchPins = () => {
-    api.getPins().then(pins => this.setState({ pins }));
+    api
+      .getPins()
+      .then(pins => this.setState({ pins }))
   };
+
+
 }
 
 const styles = StyleSheet.create({

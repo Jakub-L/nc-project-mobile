@@ -1,9 +1,1 @@
-{
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://jk-w9n.anonymous.nc-project-mobile.exp.direct",
-  "packagerNgrokUrl": "https://packager.jk-w9n.anonymous.nc-project-mobile.exp.direct",
-  "ngrokPid": 10843,
-  "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 10821
-}
+{}
