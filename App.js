@@ -138,6 +138,7 @@ class WelcomeScreen extends React.Component {
       </View>
     );
   }
+
 }
 
 const AppNavigator = createStackNavigator(
