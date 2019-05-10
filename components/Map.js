@@ -1,8 +1,6 @@
 import React from 'react';
 import { MapView, Location, Permissions, Marker} from 'expo';
 
-import * as api from '../utils/api';
-
 export default class Map extends React.Component {
   state = {
     mapRegion: {
@@ -14,7 +12,6 @@ export default class Map extends React.Component {
     locationResult: null,
     location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
     markers: [],
-    pins: [],
   };
 
   render() {
@@ -29,7 +26,7 @@ export default class Map extends React.Component {
         }}
         showsUserLocation
       >
-        {this.state.pins.map(pin => (
+        {this.props.pins.map(pin => (
           <MapView.Marker
             key={pin.pin_id}
             coordinate={{ latitude: Number(pin.latitude), longitude: Number(pin.longitude) }}
@@ -46,9 +43,7 @@ export default class Map extends React.Component {
   }
 
   componentDidMount() {
-    this._getLocationAsync()
-    this.fetchPins();
-    
+    this._getLocationAsync();
   }
 
   _getLocationAsync = async () => {
@@ -64,8 +59,5 @@ export default class Map extends React.Component {
     this.setState({ locationResult: JSON.stringify(location), location });
   };
 
-  fetchPins = () => {
-    api.getPins().then(pins => this.setState({ pins }))
-  };
 
 }
