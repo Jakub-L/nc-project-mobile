@@ -125,14 +125,14 @@ class WelcomeScreen extends React.Component {
           style={loginFailed ? welcomeScreenStyle.loginFailed : welcomeScreenStyle.textInput}
         />
         <TouchableOpacity
-          style={welcomeScreenStyle.button}
+          style={arupStyles.whiteButton}
           onPress={this.attemptLogin}
           activeOpacity={0.8}
         >
           {attemptingLogin ? (
             <ActivityIndicator size="small" color={arupStyles.blueBg} />
           ) : (
-            <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
+            <Text style={arupStyles.whiteButtonText}>Log in</Text>
           )}
         </TouchableOpacity>
       </View>
