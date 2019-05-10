@@ -6,7 +6,6 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import BasicARScene from './components/BasicARScene';
 import AddPinScreen from './components/AddPinScreen';
 import AddPhotoScreen from './components/AddPhotoScreen';
-import TestPhotoUploadScreen from './components/TestPhotoUploadScreen';
 
 class HomeScreen extends React.Component {
   render() {
@@ -16,10 +15,6 @@ class HomeScreen extends React.Component {
         <Button title="I am a pin" onPress={() => this.props.navigation.navigate('Pin')} />
         <Button title="Go to AR" onPress={() => this.props.navigation.navigate('AR')} />
         <Button title="Add Pin" onPress={() => this.props.navigation.navigate('AddPin')} />
-        <Button
-          title="Test Photo Upload"
-          onPress={() => this.props.navigation.navigate('TestPhotoUpload')}
-        />
       </View>
     );
   }
@@ -32,7 +27,6 @@ const AppNavigator = createStackNavigator(
     AddPin: AddPinScreen,
     AR: BasicARScene,
     AddPhoto: AddPhotoScreen,
-    TestPhotoUpload: TestPhotoUploadScreen,
   },
   {
     initialRouteName: 'Home',
