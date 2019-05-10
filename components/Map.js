@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapView, Location, Permissions, Marker, TouchableHighlight, View, Text } from 'expo';
+import { MapView, Location, Permissions, Marker} from 'expo';
 
 export default class Map extends React.Component {
   state = {
@@ -13,6 +13,7 @@ export default class Map extends React.Component {
     location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
     markers: [],
   };
+
   render() {
     return (
       <MapView
@@ -23,7 +24,7 @@ export default class Map extends React.Component {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        showsUserLocation={true}
+        showsUserLocation
       >
         {this.props.pins.map(pin => (
           <MapView.Marker
@@ -31,10 +32,9 @@ export default class Map extends React.Component {
             coordinate={{ latitude: Number(pin.latitude), longitude: Number(pin.longitude) }}
             title={pin.creator}
             description={pin.timestamp}
-            onPress={() =>
-              this.props.navigation.navigate('Pin', {
-                pin: pin,
-              })
+            onPress={() => this.props.navigation.navigate('Pin', {
+              pin,
+            })
             }
           />
         ))}
@@ -47,7 +47,7 @@ export default class Map extends React.Component {
   }
 
   _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
       this.setState({
         locationResult: 'Permission to access location was denied',
