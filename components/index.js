@@ -6,5 +6,10 @@ import PinScreen from './PinScreen';
 import StaticARScene from './StaticARScene';
 
 export {
-  AddPhotoScreen, AddPinScreen, BasicARScene, HomeScreen, PinScreen, StaticARScene,
+  AddPhotoScreen,
+  AddPinScreen,
+  BasicARScene,
+  HomeScreen,
+  PinScreen,
+  StaticARScene,
 };
