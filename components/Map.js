@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  MapView, Location, Permissions, Marker, TouchableHighlight, View, Text,
-} from 'expo';
+import { MapView, Location, Permissions, Marker} from 'expo';
 
 import * as api from '../utils/api';
 
@@ -48,8 +46,9 @@ export default class Map extends React.Component {
   }
 
   componentDidMount() {
-    this._getLocationAsync();
+    this._getLocationAsync()
     this.fetchPins();
+    
   }
 
   _getLocationAsync = async () => {
@@ -66,9 +65,7 @@ export default class Map extends React.Component {
   };
 
   fetchPins = () => {
-    api
-      .getPins()
-      .then(pins => this.setState({ pins }))
-      .then(console.log(this.state.pins));
+    api.getPins().then(pins => this.setState({ pins }))
   };
+
 }
