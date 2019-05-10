@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { Map } from './index';
+import Map from './Map';
 import homeScreenStyle from '../styles/HomeScreen-style';
 import arupStyles from '../styles/arupStyles';
 import * as api from '../utils/api';
