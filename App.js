@@ -5,7 +5,7 @@ import {
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Font } from 'expo';
 import {
-  BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen,
+  BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen, PinScreen,
 } from './components';
 import welcomeScreenStyle from './styles/WelcomeScreen-style';
 import navigatorStyle from './styles/Navigator-style';
@@ -56,9 +56,7 @@ class WelcomeScreen extends React.Component {
 
   attemptLogin = () => {
     const { email, password } = this.state;
-    
-
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -112,7 +110,7 @@ const AppNavigator = createStackNavigator(
   {
     Welcome: WelcomeScreen,
     Home: HomeScreen,
-    Pin: AddPinScreen,
+    Pin: PinScreen,
     AddPin: AddPinScreen,
     AR: BasicARScene,
     AddPhoto: AddPhotoScreen,
