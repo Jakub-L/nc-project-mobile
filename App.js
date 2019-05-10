@@ -1,12 +1,19 @@
 import React from 'react';
 import {
-  Image, Text, TextInput, TouchableOpacity, View,
+  ActivityIndicator,
+  AsyncStorage,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Font } from 'expo';
 import {
   BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen, PinScreen,
 } from './components';
+import * as api from './utils/api';
 import welcomeScreenStyle from './styles/WelcomeScreen-style';
 import navigatorStyle from './styles/Navigator-style';
 import arupStyles from './styles/arupStyles';
@@ -24,6 +31,7 @@ class WelcomeScreen extends React.Component {
     password: 'password',
     emailDefault: 'Ressie.Jacobs@gmail.com',
     passwordDefault: 'password',
+    attemptingLogin: false,
     loginFailed: false,
   };
 
@@ -55,12 +63,34 @@ class WelcomeScreen extends React.Component {
   };
 
   attemptLogin = () => {
-    const { email, password } = this.state;
+    const {
+      email, password, emailDefault, passwordDefault,
+    } = this.state;
+    const { navigation } = this.props;
+    this.setState({ attemptingLogin: true, loginFailed: false }, () => {
+      api
+        .loginUser(email, password)
+        .then(user => AsyncStorage.setItem('user', JSON.stringify(user)))
+        .then(() => {
+          this.setState({ attemptingLogin: false });
+          navigation.navigate('Home');
+        })
+        .catch(() => {
+          this.setState({
+            loginFailed: true,
+            attemptingLogin: false,
+            email: emailDefault,
+            password: passwordDefault,
+          });
+        });
+    });
   };
 
   render() {
     const { navigation } = this.props;
-    const { fontLoaded, email, password } = this.state;
+    const {
+      fontLoaded, email, password, attemptingLogin, loginFailed,
+    } = this.state;
     return (
       <View style={welcomeScreenStyle.container}>
         <Image source={logo} />
@@ -77,7 +107,7 @@ class WelcomeScreen extends React.Component {
           placeholder="Email"
           textContentType="emailAddress"
           placeholderTextColor={arupStyles['black-60']}
-          style={welcomeScreenStyle.textInput}
+          style={loginFailed ? welcomeScreenStyle.loginFailed : welcomeScreenStyle.textInput}
         />
         <TextInput
           onChangeText={password => this.setState({ password })}
@@ -92,14 +122,18 @@ class WelcomeScreen extends React.Component {
           textContentType="password"
           secureTextEntry
           placeholderTextColor={arupStyles['black-60']}
-          style={welcomeScreenStyle.textInput}
+          style={loginFailed ? welcomeScreenStyle.loginFailed : welcomeScreenStyle.textInput}
         />
         <TouchableOpacity
           style={welcomeScreenStyle.button}
-          onPress={() => navigation.navigate('Home')}
+          onPress={this.attemptLogin}
           activeOpacity={0.8}
         >
-          <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
+          {attemptingLogin ? (
+            <ActivityIndicator size="small" color={arupStyles.blueBg} />
+          ) : (
+            <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
+          )}
         </TouchableOpacity>
       </View>
     );
