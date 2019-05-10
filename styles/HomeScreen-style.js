@@ -9,6 +9,6 @@ export default StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
   },
 });
