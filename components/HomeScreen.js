@@ -7,27 +7,27 @@ import * as api from '../utils/api';
 
 class HomeScreen extends React.Component {
   state = {
-    user: {},
     pins: [],
   };
 
   componentDidMount() {
-    AsyncStorage.getItem('user').then((stringUser) => {
-      const user = JSON.parse(stringUser);
-      this.setState({ user });
-    });
+    this.fetchPins();
   }
+
+  fetchPins = () => {
+    api.getPins().then(pins => this.setState({ pins }));
+  };
 
   render() {
     const { navigation } = this.props;
-    console.log(this.state.user);
+    const { pins } = this.state;
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Map
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           navigation={navigation}
-          pins={this.state.pins}
+          pins={pins}
         />
         <View
           style={{
@@ -41,23 +41,12 @@ class HomeScreen extends React.Component {
           <Button title="Add pin" onPress={() => navigation.navigate('AddPin')} />
           <Button
             title="Go to AR"
-            onPress={() => this.props.navigation.navigate('AR', { pins: this.state.pins })}
+            onPress={() => navigation.navigate('AR', { pins })}
           />
         </View>
       </View>
     );
   }
-  componentDidMount() {
-    this.fetchPins();
-  }
-
-  fetchPins = () => {
-    api
-      .getPins()
-      .then(pins => this.setState({ pins }))
-  };
-
-
 }
 
 const styles = StyleSheet.create({
