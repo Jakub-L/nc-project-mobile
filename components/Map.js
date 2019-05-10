@@ -1,5 +1,7 @@
 import React from 'react';
-import { MapView, Location, Permissions, Marker} from 'expo';
+import {
+  MapView, Location, Permissions, Marker,
+} from 'expo';
 
 export default class Map extends React.Component {
   state = {
@@ -17,7 +19,7 @@ export default class Map extends React.Component {
   render() {
     return (
       <MapView
-        style={{ alignSelf: 'stretch', height: 550 }}
+        style={{ alignSelf: 'stretch', height: 650 }}
         region={{
           latitude: this.state.location.coords.latitude,
           longitude: this.state.location.coords.longitude,
@@ -58,6 +60,4 @@ export default class Map extends React.Component {
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ locationResult: JSON.stringify(location), location });
   };
-
-
 }
