@@ -19,8 +19,8 @@ export default class BasicARScene extends React.Component {
         altitude: "80",
         creator: "Elvis Rau",
         email: "Emie52@yahoo.com",
-        latitude: "53.796400",
-        longitude: "-1.548678",
+        latitude: "53.793508",
+        longitude: "-1.545508",
         note:
           "eaque saepe quidem accusantium quia rem magnam praesentium vel sed nulla dolores vero laboriosam explicabo qui ducimus repellat nobis enim numquam cupiditate eos quia aut iusto architecto temporibus delectus id ducimus ducimus iure porro amet asperiores laboriosam ullam est optio maxime quam libero aut necessitatibus sit rerum ullam voluptas aliquid assumenda enim ea sint ducimus et deleniti tenetur aliquam ad eos magni deserunt expedita id quos quo",
         photo_url: "http://lorempixel.com/640/480",
