@@ -39,6 +39,7 @@ class WelcomeScreen extends React.Component {
     await Font.loadAsync({
       'times-new-roman': require('./assets/fonts/times-new-roman.ttf'),
     });
+    await AsyncStorage.clear();
     this.setState({ fontLoaded: true });
   }
 
@@ -87,7 +88,6 @@ class WelcomeScreen extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
     const {
       fontLoaded, email, password, attemptingLogin, loginFailed,
     } = this.state;
