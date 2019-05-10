@@ -128,6 +128,7 @@ class WelcomeScreen extends React.Component {
           style={arupStyles.whiteButton}
           onPress={this.attemptLogin}
           activeOpacity={0.8}
+          disabled={attemptingLogin}
         >
           {attemptingLogin ? (
             <ActivityIndicator size="small" color={arupStyles.blueBg} />
@@ -138,7 +139,6 @@ class WelcomeScreen extends React.Component {
       </View>
     );
   }
-
 }
 
 const AppNavigator = createStackNavigator(
