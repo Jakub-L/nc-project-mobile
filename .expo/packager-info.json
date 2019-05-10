@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 25051,
-  "expoServerNgrokUrl": "https://92-uzf.anonymous.nc-project-mobile.exp.direct",
-  "packagerNgrokUrl": "https://packager.92-uzf.anonymous.nc-project-mobile.exp.direct",
-  "ngrokPid": 25066
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
