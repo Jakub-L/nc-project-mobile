@@ -1,12 +1,24 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Button,
+  AsyncStorage, StyleSheet, Text, View, Button,
 } from 'react-native';
 import { Map } from './index';
 
 class HomeScreen extends React.Component {
+  state = {
+    user: {},
+  };
+
+  componentDidMount() {
+    AsyncStorage.getItem('user').then((stringUser) => {
+      const user = JSON.parse(stringUser);
+      this.setState({ user });
+    });
+  }
+
   render() {
     const { navigation } = this.props;
+    console.log(this.state.user);
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
