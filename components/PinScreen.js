@@ -14,14 +14,14 @@ class PinScreen extends React.Component {
         <Image width={Dimensions.get('window').width} source={{ uri: pin.photo_url }} />
         <ScrollView>
           <Text>
-Posted by:
-            {pin.creator}
-
+Posted by: {pin.creator}
           </Text>
-
-          <Button onPress={() => Linking.openURL(`mailto:${pin.email}`) }
-      title={pin.email} />
-
+<Text style={styles.email} onPress={() => Linking.openURL(`mailto:${pin.email}`) } >
+{pin.email}
+</Text>
+<Text>
+Date posted: {pin.timestamp}
+          </Text>
           <Text>
             {'\n'}
             {pin.note}
@@ -31,5 +31,11 @@ Posted by:
     );
   }
 }
+
+const styles = StyleSheet.create({
+  email: {
+    color: 'blue',
+  },
+});
 
 export default PinScreen;

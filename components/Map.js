@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapView, Location, Permissions, Marker, TouchableHighlight, View, Text } from 'expo';
+import { MapView, Location, Permissions, Marker} from 'expo';
 
 import * as api from "../api";
 
@@ -40,8 +40,9 @@ coordinate={{latitude: Number(pin.latitude),
   }
 
   componentDidMount() {
-    this._getLocationAsync();
+    this._getLocationAsync()
     this.fetchPins();
+    
   }
 
 //   _handleMapRegionChange = mapRegion => {
@@ -66,13 +67,7 @@ coordinate={{latitude: Number(pin.latitude),
   };
 
   fetchPins = () => {
-    api.getPins().then(pins => this.setState({ pins })).then(console.log(this.state.pins))
+    api.getPins().then(pins => this.setState({ pins }))
   };
-
-  pinClick = () => {
-      console.log('Working')
-    // () => this.props.navigation.navigate("Pin")
-  };
-
 
 }
