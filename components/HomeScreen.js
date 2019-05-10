@@ -38,10 +38,11 @@ class HomeScreen extends React.Component {
           }}
         >
           <Text>Home Screen</Text>
-          <Button title="I am a pin" onPress={() => navigation.navigate('Pin')} />
+          <Button title="Add pin" onPress={() => navigation.navigate('AddPin')} />
           <Button
-          title="Go to AR"
-          onPress={() => this.props.navigation.navigate("AR", {pins:this.state.pins})} />
+            title="Go to AR"
+            onPress={() => this.props.navigation.navigate('AR', { pins: this.state.pins })}
+          />
         </View>
       </View>
     );
