@@ -9,10 +9,13 @@ import Map from './components/Map'
 
 
 class HomeScreen extends React.Component {
+  state = {
+ location
+  }
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Map style={{ flex: 1, alignItems: "center", justifyContent: "center" }} navigation={this.props.navigation}></Map>
+        <Map getLocation = {this.getLocation} style={{ flex: 1, alignItems: "center", justifyContent: "center" }} navigation={this.props.navigation}></Map>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
         <Text>Home Screen</Text>
         <Button
@@ -21,7 +24,7 @@ class HomeScreen extends React.Component {
         />
         <Button
           title="Go to AR"
-          onPress={() => this.props.navigation.navigate("AR")}
+          onPress={() => this.props.navigation.navigate("AR", this.state.userLocation)}
         />
         <Button
           title="Add Pin"
@@ -45,6 +48,8 @@ const AppNavigator = createStackNavigator(
     initialRouteName: "Home"
   }
 );
+
+
 
 const styles = StyleSheet.create({
   container: {
