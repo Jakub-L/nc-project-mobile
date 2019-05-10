@@ -6,13 +6,17 @@ import AddPinScreen from "./components/AddPinScreen";
 import PinScreen from "./components/PinScreen";
 import AddPhotoScreen from "./components/AddPhotoScreen";
 import Map from './components/Map'
+import * as api from './api';
 
 
 class HomeScreen extends React.Component {
+  state = {
+    pins: [],
+  }
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Map style={{ flex: 1, alignItems: "center", justifyContent: "center" }} navigation={this.props.navigation}></Map>
+        <Map style={{ flex: 1, alignItems: "center", justifyContent: "center" }} navigation={this.props.navigation} pins={this.state.pins}></Map>
         <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "center" }}>
         <Text>Home Screen</Text>
         <Button
@@ -21,7 +25,7 @@ class HomeScreen extends React.Component {
         />
         <Button
           title="Go to AR"
-          onPress={() => this.props.navigation.navigate("AR")}
+          onPress={() => this.props.navigation.navigate("AR", {pins:this.state.pins})}
         />
         <Button
           title="Add Pin"
@@ -31,6 +35,18 @@ class HomeScreen extends React.Component {
       </View>
     );
   }
+
+  componentDidMount() {
+    this.fetchPins();
+  }
+
+  fetchPins = () => {
+    api
+      .getPins()
+      .then(pins => this.setState({ pins }))
+      .then(console.log(this.state.pins))
+  };
+
 }
 
 const AppNavigator = createStackNavigator(
