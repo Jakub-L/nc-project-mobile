@@ -8,6 +8,7 @@ export default StyleSheet.create({
   },
   image: {
     flex: 1,
+    marginTop: 60,
     marginBottom: 10,
   },
   noteContainer: {
