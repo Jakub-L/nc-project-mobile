@@ -23,6 +23,7 @@ class WelcomeScreen extends React.Component {
   static navigationOptions = {
     headerMode: 'none',
     headerStyle: { backgroundColor: arupStyles.blueBg },
+    headerRight: <Text> </Text>,
   };
 
   state = {
