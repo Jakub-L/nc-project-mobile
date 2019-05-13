@@ -1,15 +1,11 @@
 function relativePhotoDirectionsFromPhone(phoneLat, phoneLong, pins, heading) {
-  //   let heading = 0;
-  //   let phoneLat = "39.099912";
-  //   let phoneLong = "-94.581213";
-  //   let lat2 = "38.627089";
-  //   let lon2 = "-90.200203";
-
-  //sort pins into array of pin_id, longitude and lattitude
-
   const locations = [];
   const relativeDirections = [];
+  const relativeDirectionsLessThan100m = [];
 
+  console.log(phoneLat, phoneLong);
+
+  //sort pins into array of pin_id, longitude and lattitude
   pins.forEach(pin => {
     const pinLocation = {
       pin_id: pin.pin_id,
@@ -20,62 +16,70 @@ function relativePhotoDirectionsFromPhone(phoneLat, phoneLong, pins, heading) {
     locations.push(pinLocation);
   });
 
-  //conversion of units
+  locations.forEach(location => {
+    //conversion of units
 
-  let lat2 = locations[0].latitude;
-  let lon2 = locations[0].longitude;
+    const photoLat = location.latitude;
+    const photoLong = location.longitude;
 
-  const earthRadiusm = 6371000;
+    const earthRadiusm = 6371000;
 
-  function degreesToRadians(degrees) {
-    return (degrees * Math.PI) / 180;
-  }
+    function degreesToRadians(degrees) {
+      return (degrees * Math.PI) / 180;
+    }
 
-  const dLat = degreesToRadians(lat2 - phoneLat);
-  const dLon = degreesToRadians(lon2 - phoneLong);
+    const dLat = degreesToRadians(photoLat - phoneLat);
+    const dLon = degreesToRadians(photoLong - phoneLong);
 
-  phoneLat = degreesToRadians(phoneLat);
-  lat2 = degreesToRadians(lat2);
-  phoneLong = degreesToRadians(phoneLong);
-  lon2 = degreesToRadians(lon2);
+    const phoneLatR = degreesToRadians(phoneLat);
+    const photoLatR = degreesToRadians(photoLat);
+    const phoneLongR = degreesToRadians(phoneLong);
+    const photoLongR = degreesToRadians(photoLong);
 
-  //DISTANCE between phone and photo
+    //DISTANCE between phone and photo
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.sin(dLon / 2) *
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.sin(dLon / 2) *
-      Math.cos(phoneLat) *
-      Math.cos(lat2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        Math.sin(dLon / 2) *
+        Math.cos(phoneLatR) *
+        Math.cos(photoLatR);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  const distancem = earthRadiusm * c;
-  //   console.log(distancem, "<--- distance from phone to photo");
+    const distancem = earthRadiusm * c;
 
-  //ANGLE of photo from true north
+    //ANGLE of photo from true north
 
-  const x = Math.cos(lat2) * Math.sin(lon2 - phoneLong);
-  const y =
-    Math.cos(phoneLat) * Math.sin(lat2) -
-    Math.sin(phoneLat) * Math.cos(lat2) * Math.cos(phoneLong - lon2);
-  let angle = (Math.atan2(x, y) * 180) / Math.PI;
-  angle < 0 ? (angle += 360) : angle;
-  //   console.log(angle, "<--- angle from true north");
+    const x = Math.cos(photoLatR) * Math.sin(photoLongR - phoneLongR);
+    const y =
+      Math.cos(phoneLatR) * Math.sin(photoLatR) -
+      Math.sin(phoneLatR) *
+        Math.cos(photoLatR) *
+        Math.cos(phoneLongR - photoLongR);
+    let angle = (Math.atan2(x, y) * 180) / Math.PI;
+    angle < 0 ? (angle += 360) : angle;
+    //   console.log(angle, "<--- angle from true north");
 
-  //relative distance from phone to photo
+    //relative distance from phone to photo
 
-  const angleRads = degreesToRadians(angle);
-  const headingRads = degreesToRadians(heading);
+    const angleRads = degreesToRadians(angle);
+    const headingRads = degreesToRadians(heading);
 
-  const forward = distancem * Math.cos(angleRads - headingRads);
-  const right = distancem * Math.sin(angleRads - headingRads);
-  const relativeDirection = { forward: forward, right: right };
+    const forward = distancem * Math.cos(angleRads - headingRads);
+    const right = distancem * Math.sin(angleRads - headingRads);
+    const relativeDirection = { forward: forward, right: right };
 
-  relativeDirections.push(relativeDirection);
+    relativeDirections.push(relativeDirection);
 
-  console.log(relativeDirections, "<--- relatve directions from phone screen");
+    if (distancem < 100) relativeDirectionsLessThan100m.push(relativeDirection);
+  });
 
-  return relativeDirections;
+  console.log(
+    relativeDirectionsLessThan100m.length,
+    "<---array of pins with less than 100m"
+  );
+
+  return relativeDirectionsLessThan100m;
 }
 
 export default relativePhotoDirectionsFromPhone;

@@ -105,15 +105,20 @@ export default class BasicARScene extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       color: 0xff0800
     });
-    // Combine our geometry and material
-    this.cylinder = new THREE.Mesh(geometry, material);
-    // Place the box 0.4 meters in front of us.
-    this.cylinder.position.x = relativeDirections[0].right;
-    this.cylinder.position.y = 0;
-    this.cylinder.position.z = relativeDirections[0].forward;
 
-    // Add the cube to the scene
-    this.scene.add(this.cylinder);
+    console.log(
+      relativeDirections.length,
+      "<--length of array in basic AR scene"
+    );
+
+    relativeDirections.forEach(relativeDirection => {
+      // Combine our geometry and material
+      this.cylinder = new THREE.Mesh(geometry, material);
+      this.cylinder.position.x = relativeDirection.right;
+      this.cylinder.position.y = 0;
+      this.cylinder.position.z = relativeDirection.forward;
+      this.scene.add(this.cylinder);
+    });
 
     // Setup a light so we can see the cube color
     // AmbientLight colors all things in the scene equally.
