@@ -81,7 +81,7 @@ class AddPinScreen extends React.Component {
   handleUploadPhoto = async () => {
     try {
       const {
-        photo: { uri },
+        photo,
         user: { user_id },
         site_id,
         note,
@@ -92,7 +92,7 @@ class AddPinScreen extends React.Component {
       this.setState({
         uploading: true,
       });
-      const photo_url = uri ? await uploadImageAsync(uri) : '';
+      const photo_url = await uploadImageAsync(photo.uri);
       await axios.post('https://site-seeing.herokuapp.com/api/pins', {
         user_id,
         site_id,
