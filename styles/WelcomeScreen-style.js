@@ -63,4 +63,9 @@ export default StyleSheet.create({
     borderColor: 'red',
     borderWidth: 2,
   },
+  logoffText: {
+    color: arup.white,
+    marginRight: 25,
+    fontSize: 22,
+  },
 });

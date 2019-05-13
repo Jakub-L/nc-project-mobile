@@ -1,5 +1,12 @@
 import React from "react";
-import { Platform, View } from "react-native";
+import {
+  AppRegistry,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet
+} from "react-native";
 import { AR, Asset, Constants, Location, Permissions } from "expo";
 // Let's alias ExpoTHREE.AR as ThreeAR so it doesn't collide with Expo.AR.
 import ExpoTHREE, { AR as ThreeAR, THREE } from "expo-three";
@@ -8,6 +15,7 @@ import ExpoTHREE, { AR as ThreeAR, THREE } from "expo-three";
 // it also provides debug information with `isArCameraStateEnabled`
 import { View as GraphicsView } from "expo-graphics";
 import relativePhotoDirectionsFromPhone from "./utils/RelativePhotoLocation";
+import TouchableView from "./TouchableView";
 
 export default class BasicARScene extends React.Component {
   state = {
@@ -43,6 +51,7 @@ export default class BasicARScene extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     if (this.state.location === undefined || this.state.heading === undefined) {
       return <View />;
     }
@@ -54,18 +63,32 @@ export default class BasicARScene extends React.Component {
     );
 
     return (
-      <GraphicsView
-        style={{ flex: 1 }}
-        onContextCreate={options =>
-          this.onContextCreate(options, relativeDirections)
-        }
-        onRender={this.onRender}
-        onResize={this.onResize}
-        isArEnabled
-        isArRunningStateEnabled
-        isArCameraStateEnabled
-        arTrackingConfiguration={AR.TrackingConfiguration.World}
-      />
+      <>
+        <TouchableView
+          style={{ flex: 9 }}
+          shouldCancelWhenOutside={false}
+          onTouchesBegan={this.onTouchesBegan}
+        >
+          <GraphicsView
+            style={{ flex: 9 }}
+            onContextCreate={options =>
+              this.onContextCreate(options, relativeDirections)
+            }
+            onRender={this.onRender}
+            onResize={this.onResize}
+            isArEnabled
+            isArRunningStateEnabled
+            isArCameraStateEnabled
+            arTrackingConfiguration={AR.TrackingConfiguration.World}
+          />
+        </TouchableView>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("AddPin")}
+        >
+          <Text>Add Pin</Text>
+        </TouchableOpacity>
+      </>
     );
   }
 
@@ -142,4 +165,44 @@ export default class BasicARScene extends React.Component {
     // Finally render the scene with the AR Camera
     this.renderer.render(this.scene, this.camera);
   };
+
+  onTouchesBegan = async ({ locationX: x, locationY: y }) => {
+    if (!this.renderer) {
+      return;
+    }
+
+    const size = this.renderer.getSize();
+    console.log("touch", { x, y, ...size });
+
+    //const position = ThreeAR.improviseHitTest({x, y}); <- Good for general purpose: "I want a point, I don't care how"
+    // const { hitTest } = await AR.performHitTest(
+    //   {
+    //     x: x / size.width,
+    //     y: y / size.height
+    //   },
+    //   AR.HitTestResultTypes.HorizontalPlane
+    // );
+  };
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 10
+  },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  },
+  countContainer: {
+    alignItems: "center",
+    padding: 10
+  },
+  countText: {
+    color: "#FF00FF"
+  }
+});
+
+AppRegistry.registerComponent("App", () => App);

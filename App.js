@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Font } from 'expo';
@@ -23,13 +24,14 @@ class WelcomeScreen extends React.Component {
   static navigationOptions = {
     headerMode: 'none',
     headerStyle: { backgroundColor: arupStyles.blueBg },
+    headerRight: <Text> </Text>,
   };
 
   state = {
     fontLoaded: false,
-    email: 'Ressie.Jacobs@gmail.com',
+    email: 'Parker61@hotmail.com',
     password: 'password',
-    emailDefault: 'Ressie.Jacobs@gmail.com',
+    emailDefault: 'Parker61@hotmail.com',
     passwordDefault: 'password',
     attemptingLogin: false,
     loginFailed: false,
@@ -92,7 +94,11 @@ class WelcomeScreen extends React.Component {
       fontLoaded, email, password, attemptingLogin, loginFailed,
     } = this.state;
     return (
-      <View style={welcomeScreenStyle.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={60}
+        style={welcomeScreenStyle.container}
+      >
         <Image source={logo} />
         {fontLoaded ? <Text style={welcomeScreenStyle.appName}>SiteSeeing</Text> : null}
         <TextInput
@@ -135,10 +141,9 @@ class WelcomeScreen extends React.Component {
             <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
           )}
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
-
 }
 
 const AppNavigator = createStackNavigator(
@@ -153,11 +158,22 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: 'Welcome',
 
-    defaultNavigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerTintColor: arupStyles.white,
       headerStyle: navigatorStyle.header,
-    },
+      headerRight: (
+        <Text
+          style={welcomeScreenStyle.logoffText}
+          onPress={async () => {
+            await AsyncStorage.clear();
+            navigation.navigate('Welcome');
+          }}
+        >
+          Log off
+        </Text>
+      ),
+    }),
   },
 );
 
