@@ -21,7 +21,7 @@ class PinScreen extends React.Component {
           <ScaleableImage style={pinScreenStyle.image} width={width} source={{ uri: photo_url }} />
         )}
         <ScrollView style={pinScreenStyle.noteContainer}>
-          {note.length > 0 ? <Text style={pinScreenStyle.noteText}>{note}</Text> : null}
+          <Text style={pinScreenStyle.noteText}>{note}</Text>
           <View style={pinScreenStyle.userFooter}>
             <Image source={{ uri: user_photo }} style={pinScreenStyle.userAvatar} />
             <View style={pinScreenStyle.userInfo}>
