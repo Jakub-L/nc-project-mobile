@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Font } from 'expo';
@@ -93,7 +94,11 @@ class WelcomeScreen extends React.Component {
       fontLoaded, email, password, attemptingLogin, loginFailed,
     } = this.state;
     return (
-      <View style={welcomeScreenStyle.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={60}
+        style={welcomeScreenStyle.container}
+      >
         <Image source={logo} />
         {fontLoaded ? <Text style={welcomeScreenStyle.appName}>SiteSeeing</Text> : null}
         <TextInput
@@ -136,7 +141,7 @@ class WelcomeScreen extends React.Component {
             <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
           )}
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
