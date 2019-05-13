@@ -54,15 +54,16 @@ class AddPinScreen extends React.Component {
     this.setState({ user: JSON.parse(user) });
   }
 
+  getLocation = async () => {
+    const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    this.setState({ location });
+  };
+
   handleTakePhoto = async () => {
     const photo = await ImagePicker.launchCameraAsync();
     if (!photo.cancelled) {
       this.setState({ selecting: true });
-      const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
-      this.setState({
-        photo,
-        location,
-      });
+      this.setState({ photo });
     }
   };
 
@@ -70,16 +71,16 @@ class AddPinScreen extends React.Component {
     const photo = await ImagePicker.launchImageLibraryAsync();
     if (!photo.cancelled) {
       this.setState({ selecting: true });
-      const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
-      this.setState({
-        photo,
-        location,
-      });
+      this.setState({ photo });
     }
   };
 
   handleUploadPhoto = async () => {
     try {
+      this.setState({
+        uploading: true,
+      });
+      await this.getLocation();
       const {
         photo,
         user: { user_id },
@@ -89,11 +90,11 @@ class AddPinScreen extends React.Component {
       } = this.state;
       const { timestamp, coords } = location;
       const { latitude, longitude, altitude } = coords;
-      this.setState({
-        uploading: true,
-      });
-      const photo_url = await uploadImageAsync(photo.uri);
-      await axios.post('https://site-seeing.herokuapp.com/api/pins', {
+      let photo_url = '';
+      if (photo) {
+        photo_url = await uploadImageAsync(photo.uri);
+      }
+      const { data } = await axios.post('https://site-seeing.herokuapp.com/api/pins', {
         user_id,
         site_id,
         timestamp: new Date(timestamp).toISOString(),

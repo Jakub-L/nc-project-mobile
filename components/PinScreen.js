@@ -17,8 +17,10 @@ class PinScreen extends React.Component {
     } = navigation.getParam('pin');
     return (
       <View style={pinScreenStyle.container}>
-        {photo_url && (
+        {photo_url ? (
           <ScaleableImage style={pinScreenStyle.image} width={width} source={{ uri: photo_url }} />
+        ) : (
+          <Text> </Text>
         )}
         <ScrollView style={pinScreenStyle.noteContainer}>
           <Text style={pinScreenStyle.noteText}>{note}</Text>
