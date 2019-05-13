@@ -5,10 +5,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
+    marginTop: 60,
   },
   image: {
     flex: 1,
-    marginTop: 60,
     marginBottom: 10,
   },
   noteContainer: {
