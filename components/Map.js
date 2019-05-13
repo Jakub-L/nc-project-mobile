@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  MapView, Location,
-} from 'expo';
+import { MapView, Location } from 'expo';
 
 export default class Map extends React.Component {
   state = {
@@ -14,7 +12,9 @@ export default class Map extends React.Component {
 
   getLocationAsync = async () => {
     const location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
+    if (location) {
+      this.setState({ location });
+    }
   };
 
   render() {
