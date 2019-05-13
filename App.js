@@ -28,9 +28,9 @@ class WelcomeScreen extends React.Component {
 
   state = {
     fontLoaded: false,
-    email: 'Ressie.Jacobs@gmail.com',
+    email: 'Parker61@hotmail.com',
     password: 'password',
-    emailDefault: 'Ressie.Jacobs@gmail.com',
+    emailDefault: 'Parker61@hotmail.com',
     passwordDefault: 'password',
     attemptingLogin: false,
     loginFailed: false,
@@ -159,6 +159,7 @@ const AppNavigator = createStackNavigator(
       headerStyle: navigatorStyle.header,
       headerRight: (
         <Text
+          style={welcomeScreenStyle.logoffText}
           onPress={async () => {
             await AsyncStorage.clear();
             navigation.navigate('Welcome');
