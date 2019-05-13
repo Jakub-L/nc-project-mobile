@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { MapView, Location } from 'expo';
 
 export default class Map extends React.Component {
   state = {
-    location: { coords: { latitude: 57.794671, longitude: -1.547202 } },
+    location: { coords: { latitude: 53.795, longitude: -1.546 } },
   };
 
   componentDidMount() {
