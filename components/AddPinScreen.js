@@ -51,7 +51,7 @@ class AddPinScreen extends React.Component {
     await Permissions.askAsync(Permissions.CAMERA);
     await Permissions.askAsync(Permissions.LOCATION);
     const user = await AsyncStorage.getItem('user');
-    this.setState({ user });
+    this.setState({ user: JSON.parse(user) });
   }
 
   handleTakePhoto = async () => {
@@ -93,7 +93,7 @@ class AddPinScreen extends React.Component {
         uploading: true,
       });
       const photo_url = uri ? await uploadImageAsync(uri) : '';
-      const { data } = await axios.post('https://site-seeing.herokuapp.com/api/pins', {
+      await axios.post('https://site-seeing.herokuapp.com/api/pins', {
         user_id,
         site_id,
         timestamp: new Date(timestamp).toISOString(),
@@ -104,11 +104,15 @@ class AddPinScreen extends React.Component {
         note,
       });
     } catch (e) {
-      alert('Unable to upload - please try again later');
+      alert(`Error! Upload failed with error: ${e}`);
     } finally {
       this.setState({
         uploading: false,
+        note: '',
+        photo: null,
+        selecting: false,
       });
+      alert('Upload successful!');
     }
   };
 
@@ -171,7 +175,7 @@ class AddPinScreen extends React.Component {
         <TouchableOpacity
           style={photo || note ? arup.blueButton : addPinScreenStyle.disabledButton}
           disabled={(!photo && !note) || uploading}
-          onPress={() => alert('uploaded')}
+          onPress={this.handleUploadPhoto}
           activeOpacity={0.8}
         >
           {uploading ? (
@@ -180,22 +184,6 @@ class AddPinScreen extends React.Component {
             <Text style={arup.blueButtonText}>Upload pin</Text>
           )}
         </TouchableOpacity>
-        {/* {photo && (
-          <React.Fragment>
-            <Image source={{ uri: photo.uri }} style={{ width: 300, height: 300 }} />
-            {uploading ? (
-              <ActivityIndicator size="large" />
-            ) : upload_complete ? (
-              <Text>Upload complete</Text>
-            ) : (
-              <Button onPress={this.handleUploadPhoto} title="Upload" />
-            )}
-          </React.Fragment>
-        )}
-
-        <Button onPress={this.handleChoosePhoto} title="Pick an image from camera roll" />
-
-        <Button onPress={this.handleTakePhoto} title="Take a photo" /> */}
       </KeyboardAvoidingView>
     );
   }
