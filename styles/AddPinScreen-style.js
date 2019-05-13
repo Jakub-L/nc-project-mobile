@@ -14,8 +14,8 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
   },
   image: {
-    height: 250,
-    width: 250,
+    height: 300,
+    width: 300,
     margin: 10,
     marginTop: 60,
   },
