@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  Text, View, Dimensions, ScrollView, Linking,
+  Text, View, Dimensions, ScrollView, Linking, Image,
 } from 'react-native';
-import Image from 'react-native-scalable-image';
+import ScaleableImage from 'react-native-scalable-image';
 import { convertIsoDate } from '../utils/pin-utils';
 import pinScreenStyle from '../styles/PinScreen-style';
 
@@ -13,19 +13,27 @@ class PinScreen extends React.Component {
     const { width } = Dimensions.get('window');
     const { navigation } = this.props;
     const {
-      email, creator, timestamp, note, photo_url,
+      email, creator, timestamp, note, photo_url, user_photo,
     } = navigation.getParam('pin');
     return (
       <View style={pinScreenStyle.container}>
         {photo_url && (
-          <Image style={pinScreenStyle.image} width={width} source={{ uri: photo_url }} />
+          <ScaleableImage style={pinScreenStyle.image} width={width} source={{ uri: photo_url }} />
         )}
         <ScrollView style={pinScreenStyle.noteContainer}>
           {note.length > 0 ? <Text style={pinScreenStyle.noteText}>{note}</Text> : null}
           <View style={pinScreenStyle.userFooter}>
-            <Text>{creator}</Text>
-            <Text onPress={() => Linking.openURL(`mailto:${email}`)}>{email}</Text>
-            <Text>{convertIsoDate(timestamp)}</Text>
+            <Image source={{ uri: user_photo }} style={pinScreenStyle.userAvatar} />
+            <View style={pinScreenStyle.userInfo}>
+              <Text style={pinScreenStyle.userName}>{creator}</Text>
+              <Text
+                style={pinScreenStyle.userEmail}
+                onPress={() => Linking.openURL(`mailto:${email}`)}
+              >
+                {email}
+              </Text>
+              <Text style={pinScreenStyle.userTimestamp}>{convertIsoDate(timestamp)}</Text>
+            </View>
           </View>
         </ScrollView>
       </View>

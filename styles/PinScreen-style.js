@@ -17,16 +17,43 @@ export default StyleSheet.create({
   },
   userFooter: {
     flex: 1,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'red',
+    flexDirection: 'row',
+    paddingTop: 10,
+    borderTopColor: arup['black-60'],
+    borderTopWidth: 1,
     marginBottom: 20,
   },
   noteText: {
     fontSize: 22,
     textAlign: 'justify',
     lineHeight: 30,
-    color: arup['grey-80'],
+    color: arup['black-80'],
     marginBottom: 10,
+  },
+  userAvatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginRight: 10,
+  },
+  userInfo: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  userName: {
+    fontSize: 23,
+    fontFamily: 'times-new-roman',
+    color: arup.blueText,
+  },
+  userEmail: {
+    fontSize: 20,
+    fontFamily: 'times-new-roman',
+    color: arup['black-100'],
+    textDecorationLine: 'underline',
+  },
+  userTimestamp: {
+    fontSize: 20,
+    fontFamily: 'times-new-roman',
+    color: arup['black-80'],
   },
 });
