@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { MapView, Location } from 'expo';
+import { convertIsoDate } from '../utils/pin-utils';
 
 export default class Map extends React.Component {
   state = {
@@ -36,8 +36,6 @@ export default class Map extends React.Component {
           <MapView.Marker
             key={pin.pin_id}
             coordinate={{ latitude: Number(pin.latitude), longitude: Number(pin.longitude) }}
-            title={pin.creator}
-            description={pin.timestamp}
             onPress={() => navigation.navigate('Pin', {
               pin,
             })
