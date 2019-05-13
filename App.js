@@ -140,11 +140,6 @@ class WelcomeScreen extends React.Component {
   }
 }
 
-const logoff = async () => {
-  await AsyncStorage.clear();
-  navigation.navigate('Welcome');
-};
-
 const AppNavigator = createStackNavigator(
   {
     Welcome: WelcomeScreen,
@@ -161,7 +156,16 @@ const AppNavigator = createStackNavigator(
       headerTransparent: true,
       headerTintColor: arupStyles.white,
       headerStyle: navigatorStyle.header,
-      headerRight: <Text onPress={() => navigation.navigate('Welcome')}>Log off</Text>,
+      headerRight: (
+        <Text
+          onPress={async () => {
+            await AsyncStorage.clear();
+            navigation.navigate('Welcome');
+          }}
+        >
+          Log off
+        </Text>
+      ),
     }),
   },
 );
