@@ -14,23 +14,7 @@ export default class BasicARScene extends React.Component {
     location: undefined,
     heading: undefined,
     errorMessage: null,
-    pins: [
-      {
-        altitude: "80",
-        creator: "Elvis Rau",
-        email: "Emie52@yahoo.com",
-        latitude: "53.793508",
-        longitude: "-1.545508",
-        note:
-          "eaque saepe quidem accusantium quia rem magnam praesentium vel sed nulla dolores vero laboriosam explicabo qui ducimus repellat nobis enim numquam cupiditate eos quia aut iusto architecto temporibus delectus id ducimus ducimus iure porro amet asperiores laboriosam ullam est optio maxime quam libero aut necessitatibus sit rerum ullam voluptas aliquid assumenda enim ea sint ducimus et deleniti tenetur aliquam ad eos magni deserunt expedita id quos quo",
-        photo_url: "http://lorempixel.com/640/480",
-        pin_id: 32,
-        site_name: "Dietrichfurt",
-        timestamp: "2019-05-07T14:36:55.998Z",
-        user_photo:
-          "https://s3.amazonaws.com/uifaces/faces/twitter/snowwrite/128.jpg"
-      }
-    ],
+    pins: [],
     relativeDirections: undefined
   };
 
@@ -65,8 +49,7 @@ export default class BasicARScene extends React.Component {
     const relativeDirections = relativePhotoDirectionsFromPhone(
       this.state.location.coords.latitude,
       this.state.location.coords.longitude,
-      this.state.pins[0].latitude,
-      this.state.pins[0].longitude,
+      this.props.navigation.getParam("pins"),
       this.state.heading.trueHeading
     );
 
@@ -122,13 +105,12 @@ export default class BasicARScene extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       color: 0xff0800
     });
-    console.log(relativeDirections);
     // Combine our geometry and material
     this.cylinder = new THREE.Mesh(geometry, material);
     // Place the box 0.4 meters in front of us.
-    this.cylinder.position.x = relativeDirections.right;
+    this.cylinder.position.x = relativeDirections[0].right;
     this.cylinder.position.y = 0;
-    this.cylinder.position.z = relativeDirections.forward;
+    this.cylinder.position.z = relativeDirections[0].forward;
 
     // Add the cube to the scene
     this.scene.add(this.cylinder);
