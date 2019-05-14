@@ -1,62 +1,59 @@
 import React from 'react';
 import {
-  AsyncStorage, StyleSheet, Text, View, Button,
+  StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { Map } from './index';
+import Map from './Map';
+import homeScreenStyle from '../styles/HomeScreen-style';
+import arupStyles from '../styles/arupStyles';
 import * as api from '../utils/api';
 
 class HomeScreen extends React.Component {
   state = {
-    user: {},
     pins: [],
+    selectedPin: {},
   };
 
-  componentDidMount() {
-    AsyncStorage.getItem('user').then((stringUser) => {
-      const user = JSON.parse(stringUser);
-      this.setState({ user });
-    });
-  }
-
-  render() {
-    const { navigation } = this.props;
-    console.log(this.state.user);
-
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Map
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          navigation={navigation}
-          pins={this.state.pins}
-        />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text>Home Screen</Text>
-          <Button title="I am a pin" onPress={() => navigation.navigate('Pin')} />
-          <Button
-          title="Go to AR"
-          onPress={() => this.props.navigation.navigate("AR", {pins:this.state.pins})} />
-        </View>
-      </View>
-    );
-  }
   componentDidMount() {
     this.fetchPins();
   }
 
   fetchPins = () => {
-    api
-      .getPins()
-      .then(pins => this.setState({ pins }))
+    api.getPins().then(pins => this.setState({ pins }));
   };
 
+  findSelectedPin = (selectedPinID) => {
+    const selectedPinArray =  this.state.pins.filter(pin => pin.pin_id === selectedPinID);
+    const pin=selectedPinArray[0];
+    this.props.navigation.navigate('Pin', { pin })
+  }
 
+  render() {
+    const { navigation } = this.props;
+    const { pins } = this.state;
+    const { selectedPin } = this.state;
+
+    return (
+      <View style={homeScreenStyle.container}>
+        <Map style={homeScreenStyle.map} navigation={navigation} pins={pins} />
+        <View style={homeScreenStyle.buttonContainer}>
+          <TouchableOpacity
+            style={arupStyles.blueButton}
+            onPress={() => navigation.navigate('AddPin')}
+            activeOpacity={0.8}
+          >
+            <Text style={arupStyles.blueButtonText}>Add Pin</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={arupStyles.blueButton}
+            onPress={() => navigation.navigate('AR', { pins, findSelectedPin: this.findSelectedPin })}
+            activeOpacity={0.8}
+          >
+            <Text style={arupStyles.blueButtonText}>Go to AR Viewer</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
