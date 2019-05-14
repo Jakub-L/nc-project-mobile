@@ -1,6 +1,7 @@
-import React from "react";
-import { PanResponder, View } from "react-native";
-import { PropTypes } from "prop-types";
+// @flow
+import React from 'react';
+import { PanResponder, View } from 'react-native';
+import { PropTypes } from 'prop-types';
 
 /* global Alert */
 
@@ -10,14 +11,14 @@ class TouchableView extends React.Component {
     onTouchesMoved: PropTypes.func.isRequired,
     onTouchesEnded: PropTypes.func.isRequired,
     onTouchesCancelled: PropTypes.func.isRequired,
-    onStartShouldSetPanResponderCapture: PropTypes.func.isRequired
+    onStartShouldSetPanResponderCapture: PropTypes.func.isRequired,
   };
   static defaultProps = {
     onTouchesBegan: () => {},
     onTouchesMoved: () => {},
     onTouchesEnded: () => {},
     onTouchesCancelled: () => {},
-    onStartShouldSetPanResponderCapture: () => true
+    onStartShouldSetPanResponderCapture: () => true,
   };
 
   buildGestures = () =>
@@ -25,32 +26,31 @@ class TouchableView extends React.Component {
       // onResponderTerminate: this.props.onResponderTerminate ,
       // onStartShouldSetResponder: () => true,
       onResponderTerminationRequest: this.props.onResponderTerminationRequest,
-      onStartShouldSetPanResponderCapture: this.props
-        .onStartShouldSetPanResponderCapture,
+      onStartShouldSetPanResponderCapture: this.props.onStartShouldSetPanResponderCapture,
       // onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderGrant: ({ nativeEvent }, gestureState) => {
         const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit("touchstart", event);
+        this._emit('touchstart', event);
         this.props.onTouchesBegan(event);
       },
       onPanResponderMove: ({ nativeEvent }, gestureState) => {
         const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit("touchmove", event);
+        this._emit('touchmove', event);
         this.props.onTouchesMoved(event);
       },
       onPanResponderRelease: ({ nativeEvent }, gestureState) => {
         const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit("touchend", event);
+        this._emit('touchend', event);
         this.props.onTouchesEnded(event);
       },
       onPanResponderTerminate: ({ nativeEvent }, gestureState) => {
         const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit("touchcancel", event);
+        this._emit('touchcancel', event);
 
         this.props.onTouchesCancelled
           ? this.props.onTouchesCancelled(event)
           : this.props.onTouchesEnded(event);
-      }
+      },
     });
 
   componentWillMount() {

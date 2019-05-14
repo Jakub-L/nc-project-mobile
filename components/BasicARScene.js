@@ -16,6 +16,8 @@ import TouchableView from './TouchableView';
 import arupStyles from '../styles/arupStyles';
 
 export default class BasicARScene extends React.Component {
+  touch = new THREE.Vector2();
+  raycaster = new THREE.Raycaster();
   state = {
     location: undefined,
     heading: undefined,
@@ -118,7 +120,7 @@ export default class BasicARScene extends React.Component {
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
 
     // Make a cube - notice that each unit is 1 meter in real life, we will make our box 0.1 meters
-    const geometry = new THREE.CylinderGeometry(0.1, 0.1, 50, 12);
+    const geometry = new THREE.CylinderGeometry(0.2, 0.2, 100, 12);
     // Simple color material
     const material = new THREE.MeshPhongMaterial({
       color: 0xff0800,
@@ -132,6 +134,7 @@ export default class BasicARScene extends React.Component {
       this.cylinder.position.x = relativeDirection.right;
       this.cylinder.position.y = 0;
       this.cylinder.position.z = relativeDirection.forward;
+      this.cylinder.type = relativeDirection.pin_id;
       this.scene.add(this.cylinder);
     });
 
@@ -166,37 +169,23 @@ export default class BasicARScene extends React.Component {
     }
 
     const size = this.renderer.getSize();
-    console.log('touch', { x, y, ...size });
 
-    // const position = ThreeAR.improviseHitTest({x, y}); <- Good for general purpose: "I want a point, I don't care how"
-    // const { hitTest } = await AR.performHitTest(
-    //   {
-    //     x: x / size.width,
-    //     y: y / size.height
-    //   },
-    //   AR.HitTestResultTypes.HorizontalPlane
-    // );
+this.touch.x=x/size.width-0.3
+this.touch.y=y/ size.height
+this.touch.z=1000000000
+
+this.runHitTest()
+
+  };
+
+  runHitTest = () => {
+    this.raycaster.setFromCamera(this.touch, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+    if (intersects.length) { 
+    this.props.navigation.getParam("findSelectedPin")(intersects[0].object.type)
+    }
   };
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-  },
-  countContainer: {
-    alignItems: 'center',
-    padding: 10,
-  },
-  countText: {
-    color: '#FF00FF',
-  },
-});
 
 AppRegistry.registerComponent('App', () => App);

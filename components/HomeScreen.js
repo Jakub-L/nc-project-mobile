@@ -10,6 +10,7 @@ import * as api from '../utils/api';
 class HomeScreen extends React.Component {
   state = {
     pins: [],
+    selectedPin: {},
   };
 
   componentDidMount() {
@@ -18,6 +19,12 @@ class HomeScreen extends React.Component {
 
   fetchPins = () => {
     api.getPins().then(pins => this.setState({ pins }));
+  };
+
+  findSelectedPin = (selectedPinID) => {
+    const selectedPinArray = this.state.pins.filter(pin => pin.pin_id === selectedPinID);
+    const pin = selectedPinArray[0];
+    this.props.navigation.navigate('Pin', { pin });
   };
 
   addNewPin = (pin) => {
@@ -30,6 +37,7 @@ class HomeScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const { pins } = this.state;
+    const { selectedPin } = this.state;
 
     return (
       <View style={homeScreenStyle.container}>
@@ -45,7 +53,8 @@ class HomeScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AR', { pins })}
+            onPress={() => navigation.navigate('AR', { pins, findSelectedPin: this.findSelectedPin })
+            }
             activeOpacity={0.8}
           >
             <Text style={arupStyles.blueButtonText}>Go to AR Viewer</Text>
