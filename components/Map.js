@@ -1,7 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { MapView, Location } from 'expo';
-import { convertIsoDate } from '../utils/pin-utils';
 
 export default class Map extends React.Component {
   state = {
