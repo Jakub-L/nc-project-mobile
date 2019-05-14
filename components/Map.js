@@ -27,8 +27,8 @@ export default class Map extends React.Component {
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
         }}
         showsUserLocation
       >
