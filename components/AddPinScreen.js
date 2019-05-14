@@ -27,7 +27,8 @@ class AddPinScreen extends React.Component {
   };
 
   state = {
-    user: {},
+    user: { user_id: null, creator: null, email: null },
+    site: { site_id: 1, site_name: 'West Ardenborough' },
     selecting: false,
     photo: null,
     note: '',
@@ -45,6 +46,10 @@ class AddPinScreen extends React.Component {
       },
     },
   };
+
+  async componentWillMount() {
+    await this.setState({ user: this.props.navigation.getParam('user') });
+  }
 
   async componentDidMount() {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -82,11 +87,7 @@ class AddPinScreen extends React.Component {
       });
       await this.getLocation();
       const {
-        photo,
-        user: { user_id },
-        site_id,
-        note,
-        location,
+        photo, user, site, note, location,
       } = this.state;
       const { timestamp, coords } = location;
       const { latitude, longitude, altitude } = coords;
@@ -95,8 +96,8 @@ class AddPinScreen extends React.Component {
         photo_url = await uploadImageAsync(photo.uri);
       }
       const { data } = await axios.post('https://site-seeing.herokuapp.com/api/pins', {
-        user_id,
-        site_id,
+        user_id: user.user_id,
+        site_id: site.site_id,
         timestamp: new Date(timestamp).toISOString(),
         latitude,
         longitude,
@@ -104,6 +105,12 @@ class AddPinScreen extends React.Component {
         photo_url,
         note,
       });
+      const addedPin = data.pin;
+      addedPin.creator = user.name;
+      addedPin.user_photo = user.user_photo;
+      addedPin.site_name = site.site_name;
+      const addNewPin = this.props.navigation.getParam('addNewPin');
+      addNewPin(addedPin);
     } catch (e) {
       alert(`Error! Upload failed with error: ${e}`);
     } finally {

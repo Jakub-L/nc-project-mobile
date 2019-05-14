@@ -20,6 +20,13 @@ class HomeScreen extends React.Component {
     api.getPins().then(pins => this.setState({ pins }));
   };
 
+  addNewPin = (pin) => {
+    this.setState((state) => {
+      const { pins } = state;
+      return { pins: [...pins, pin] };
+    });
+  };
+
   render() {
     const { navigation } = this.props;
     const { pins } = this.state;
@@ -30,7 +37,8 @@ class HomeScreen extends React.Component {
         <View style={homeScreenStyle.buttonContainer}>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AddPin')}
+            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
+            }
             activeOpacity={0.8}
           >
             <Text style={arupStyles.blueButtonText}>Add Pin</Text>
