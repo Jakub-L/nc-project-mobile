@@ -27,9 +27,9 @@ class WelcomeScreen extends React.Component {
 
   state = {
     fontLoaded: false,
-    email: 'Ressie.Jacobs@gmail.com',
+    email: 'Shea.Hauck@hotmail.com',
     password: 'password',
-    emailDefault: 'Ressie.Jacobs@gmail.com',
+    emailDefault: 'Shea.Hauck@hotmail.com',
     passwordDefault: 'password',
     attemptingLogin: false,
     loginFailed: false,
@@ -138,7 +138,6 @@ class WelcomeScreen extends React.Component {
       </View>
     );
   }
-
 }
 
 const AppNavigator = createStackNavigator(

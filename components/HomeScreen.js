@@ -38,7 +38,11 @@ class HomeScreen extends React.Component {
           }}
         >
           <Text>Home Screen</Text>
-          <Button title="Add pin" onPress={() => navigation.navigate('AddPin')} />
+          <Button
+            title="Add pin"
+            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
+            }
+          />
           <Button
             title="Go to AR"
             onPress={() => this.props.navigation.navigate('AR', { pins: this.state.pins })}
@@ -47,17 +51,21 @@ class HomeScreen extends React.Component {
       </View>
     );
   }
+
   componentDidMount() {
     this.fetchPins();
   }
 
   fetchPins = () => {
-    api
-      .getPins()
-      .then(pins => this.setState({ pins }))
+    api.getPins().then(pins => this.setState({ pins }));
   };
 
-
+  addNewPin = (pin) => {
+    this.setState((state) => {
+      const { pins } = state;
+      return { pins: [...pins, pin] };
+    });
+  };
 }
 
 const styles = StyleSheet.create({

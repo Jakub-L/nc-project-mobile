@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Constants, ImagePicker, Permissions, Location } from 'expo';
+import {
+  Constants, ImagePicker, Permissions, Location,
+} from 'expo';
 import uuid from 'uuid';
 import * as firebase from 'firebase';
 import axios from 'axios';
@@ -22,8 +24,8 @@ firebase.initializeApp(firebaseConfig);
 
 class AddPinScreen extends React.Component {
   state = {
-    user_id: 1,
-    site_id: 1,
+    user: { user_id: null, creator: null, email: null },
+    site: { site_id: 1, site_name: 'West Ardenborough' },
     photo: null,
     note: 'No note provided',
     uploading: false,
@@ -41,6 +43,10 @@ class AddPinScreen extends React.Component {
     },
   };
 
+  async componentWillMount() {
+    await this.setState({ user: this.props.navigation.getParam('user') });
+  }
+
   async componentDidMount() {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
     await Permissions.askAsync(Permissions.CAMERA);
@@ -48,7 +54,9 @@ class AddPinScreen extends React.Component {
   }
 
   render() {
-    let { photo, note, upload_complete, uploading } = this.state;
+    const {
+      photo, note, upload_complete, uploading,
+    } = this.state;
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -73,17 +81,17 @@ class AddPinScreen extends React.Component {
           onChangeText={note => this.setState({ note })}
           value={note}
           placeholder="Note"
-          editable={true}
+          editable
         />
       </View>
     );
   }
 
   handleTakePhoto = async () => {
-    let photo = await ImagePicker.launchCameraAsync({
+    const photo = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
     });
-    let location = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
     this.setState({
       photo,
       upload_complete: false,
@@ -92,10 +100,10 @@ class AddPinScreen extends React.Component {
   };
 
   handleChoosePhoto = async () => {
-    let photo = await ImagePicker.launchImageLibraryAsync({
+    const photo = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
     });
-    let location = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    const location = await Location.getCurrentPositionAsync({ accuracy: 5 });
     // technically this is just the position where the photo was selected from the image library - NOT necessarily where it was taken
     this.setState({
       photo,
@@ -106,7 +114,9 @@ class AddPinScreen extends React.Component {
 
   handleUploadPhoto = async () => {
     try {
-      const { photo, user_id, site_id, note, location } = this.state;
+      const {
+        photo, user, site, note, location,
+      } = this.state;
       const { timestamp, coords } = location;
       const { latitude, longitude, altitude } = coords;
       this.setState({
@@ -114,7 +124,7 @@ class AddPinScreen extends React.Component {
         upload_complete: false,
       });
       const photo_url = await uploadImageAsync(photo.uri);
-      const { data } = await axios.post('https://site-seeing.herokuapp.com/api/pins', {
+      const addedPin = await axios.post('https://site-seeing.herokuapp.com/api/pins', {
         user_id,
         site_id,
         timestamp: new Date(timestamp).toISOString(),
@@ -123,7 +133,12 @@ class AddPinScreen extends React.Component {
         altitude,
         photo_url,
         note,
-      });
+      }).data;
+      addedPin.creator = user.name;
+      addedPin.user_photo = user.user_photo;
+      addedPin.site_name = site.site_name;
+      const addNewPin = this.props.navigation.getParam('addNewPin');
+      addNewPin(addedPin);
       this.setState({
         upload_complete: true,
       });
@@ -140,10 +155,10 @@ class AddPinScreen extends React.Component {
 async function uploadImageAsync(uri) {
   const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.onload = function() {
+    xhr.onload = function () {
       resolve(xhr.response);
     };
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       console.log(e);
       reject(new TypeError('Network request failed'));
     };
