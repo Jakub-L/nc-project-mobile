@@ -22,10 +22,17 @@ class HomeScreen extends React.Component {
   };
 
   findSelectedPin = (selectedPinID) => {
-    const selectedPinArray =  this.state.pins.filter(pin => pin.pin_id === selectedPinID);
-    const pin=selectedPinArray[0];
-    this.props.navigation.navigate('Pin', { pin })
-  }
+    const selectedPinArray = this.state.pins.filter(pin => pin.pin_id === selectedPinID);
+    const pin = selectedPinArray[0];
+    this.props.navigation.navigate('Pin', { pin });
+  };
+
+  addNewPin = (pin) => {
+    this.setState((state) => {
+      const { pins } = state;
+      return { pins: [...pins, pin] };
+    });
+  };
 
   render() {
     const { navigation } = this.props;
@@ -38,14 +45,16 @@ class HomeScreen extends React.Component {
         <View style={homeScreenStyle.buttonContainer}>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AddPin')}
+            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
+            }
             activeOpacity={0.8}
           >
             <Text style={arupStyles.blueButtonText}>Add Pin</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AR', { pins, findSelectedPin: this.findSelectedPin })}
+            onPress={() => navigation.navigate('AR', { pins, findSelectedPin: this.findSelectedPin })
+            }
             activeOpacity={0.8}
           >
             <Text style={arupStyles.blueButtonText}>Go to AR Viewer</Text>

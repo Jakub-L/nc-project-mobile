@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 export default {
   // COLOURS
   white: '#ffffff',
@@ -36,9 +38,8 @@ export default {
     borderStyle: 'solid',
   },
   whiteButtonText: {
-    fontSize: 20,
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
     color: '#157eaa',
-    textTransform: 'uppercase',
   },
   blueButton: {
     height: 40,
@@ -53,8 +54,7 @@ export default {
     borderRadius: 5,
   },
   blueButtonText: {
-    fontSize: 20,
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
     color: '#ffffff',
-    textTransform: 'uppercase',
   },
 };
