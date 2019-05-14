@@ -37,7 +37,7 @@ class HomeScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AR')}
+            onPress={() => navigation.navigate('AR', { pins })}
             activeOpacity={0.8}
           >
             <Text style={arupStyles.blueButtonText}>Go to AR Viewer</Text>

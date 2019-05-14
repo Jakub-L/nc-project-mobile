@@ -1,6 +1,6 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { MapView, Location } from 'expo';
-import { convertIsoDate } from '../utils/pin-utils';
 
 export default class Map extends React.Component {
   state = {
@@ -23,7 +23,7 @@ export default class Map extends React.Component {
     const { pins, navigation } = this.props;
     return (
       <MapView
-        style={{ alignSelf: 'stretch', height: 650 }}
+        style={{ alignSelf: 'stretch', height: Platform.OS === 'ios' ? 550 : 650 }}
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
