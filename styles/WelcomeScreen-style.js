@@ -16,26 +16,6 @@ export default StyleSheet.create({
     marginBottom: 30,
     color: arup.white,
   },
-  button: {
-    height: 40,
-    margin: 10,
-    marginRight: 100,
-    marginLeft: 100,
-    padding: 10,
-    alignSelf: 'stretch',
-    backgroundColor: arup.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    borderColor: arup['black-60'],
-    borderWidth: 1,
-    borderStyle: 'solid',
-  },
-  buttonText: {
-    fontSize: 20,
-    color: arup.blueText,
-    textTransform: 'uppercase',
-  },
   textInput: {
     backgroundColor: arup.white,
     height: 40,
@@ -62,5 +42,10 @@ export default StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'red',
     borderWidth: 2,
+  },
+  logoffText: {
+    color: arup.white,
+    marginRight: 25,
+    fontSize: 22,
   },
 });

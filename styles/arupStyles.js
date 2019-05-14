@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 export default {
   // COLOURS
   white: '#ffffff',
@@ -20,4 +22,39 @@ export default {
   // TYPEFACES
   fontPrimary: 'Times New Roman',
   fontSecondary: 'Arial',
+  whiteButton: {
+    height: 40,
+    margin: 10,
+    marginRight: 100,
+    marginLeft: 100,
+    padding: 10,
+    alignSelf: 'stretch',
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    borderColor: '#666666',
+    borderWidth: 1,
+    borderStyle: 'solid',
+  },
+  whiteButtonText: {
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
+    color: '#157eaa',
+  },
+  blueButton: {
+    height: 40,
+    margin: 10,
+    marginRight: 100,
+    marginLeft: 100,
+    padding: 10,
+    alignSelf: 'stretch',
+    backgroundColor: '#28aae1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  blueButtonText: {
+    fontSize: Platform.OS === 'ios' ? 16 : 20,
+    color: '#ffffff',
+  },
 };

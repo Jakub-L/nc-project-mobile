@@ -1,56 +1,16 @@
 import React from 'react';
 import {
-  AsyncStorage, StyleSheet, Text, View, Button,
+  StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { Map } from './index';
+import Map from './Map';
+import homeScreenStyle from '../styles/HomeScreen-style';
+import arupStyles from '../styles/arupStyles';
 import * as api from '../utils/api';
 
 class HomeScreen extends React.Component {
   state = {
-    user: {},
     pins: [],
   };
-
-  componentDidMount() {
-    AsyncStorage.getItem('user').then((stringUser) => {
-      const user = JSON.parse(stringUser);
-      this.setState({ user });
-    });
-  }
-
-  render() {
-    const { navigation } = this.props;
-    console.log(this.state.user);
-
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Map
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          navigation={navigation}
-          pins={this.state.pins}
-        />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Text>Home Screen</Text>
-          <Button
-            title="Add pin"
-            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
-            }
-          />
-          <Button
-            title="Go to AR"
-            onPress={() => this.props.navigation.navigate('AR', { pins: this.state.pins })}
-          />
-        </View>
-      </View>
-    );
-  }
 
   componentDidMount() {
     this.fetchPins();
@@ -66,6 +26,34 @@ class HomeScreen extends React.Component {
       return { pins: [...pins, pin] };
     });
   };
+
+  render() {
+    const { navigation } = this.props;
+    const { pins } = this.state;
+
+    return (
+      <View style={homeScreenStyle.container}>
+        <Map style={homeScreenStyle.map} navigation={navigation} pins={pins} />
+        <View style={homeScreenStyle.buttonContainer}>
+          <TouchableOpacity
+            style={arupStyles.blueButton}
+            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
+            }
+            activeOpacity={0.8}
+          >
+            <Text style={arupStyles.blueButtonText}>Add Pin</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={arupStyles.blueButton}
+            onPress={() => navigation.navigate('AR', { pins })}
+            activeOpacity={0.8}
+          >
+            <Text style={arupStyles.blueButtonText}>Go to AR Viewer</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
