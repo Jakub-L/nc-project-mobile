@@ -169,7 +169,6 @@ export default class BasicARScene extends React.Component {
     }
 
     const size = this.renderer.getSize();
-<<<<<<< HEAD
 
 this.touch.x=x/size.width-0.3
 this.touch.y=y/ size.height
@@ -186,18 +185,6 @@ this.runHitTest()
     if (intersects.length) { 
     this.props.navigation.getParam("findSelectedPin")(intersects[0].object.type)
     }
-=======
-    console.log('touch', { x, y, ...size });
-
-    // const position = ThreeAR.improviseHitTest({x, y}); <- Good for general purpose: "I want a point, I don't care how"
-    // const { hitTest } = await AR.performHitTest(
-    //   {
-    //     x: x / size.width,
-    //     y: y / size.height
-    //   },
-    //   AR.HitTestResultTypes.HorizontalPlane
-    // );
->>>>>>> a2b846730204ccc2b03ea5c96cb1153739633794
   };
 }
 const styles = StyleSheet.create({
