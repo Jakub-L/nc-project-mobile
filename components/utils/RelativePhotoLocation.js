@@ -67,7 +67,11 @@ function relativePhotoDirectionsFromPhone(phoneLat, phoneLong, pins, heading) {
 
     const forward = distancem * Math.cos(angleRads - headingRads);
     const right = distancem * Math.sin(angleRads - headingRads);
-    const relativeDirection = { forward: forward, right: right };
+    const relativeDirection = {
+      forward: forward,
+      right: right,
+      pin_id: location.pin_id
+    };
 
     relativeDirections.push(relativeDirection);
 

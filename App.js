@@ -29,6 +29,7 @@ class WelcomeScreen extends React.Component {
 
   state = {
     fontLoaded: false,
+
     email: 'Trystan_Connelly@gmail.com',
     password: 'password',
     emailDefault: 'Trystan_Connelly@gmail.com',
