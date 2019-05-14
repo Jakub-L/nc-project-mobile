@@ -1,21 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
-  AppRegistry,
-  Platform,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet
-} from "react-native";
-import { AR, Asset, Constants, Location, Permissions } from "expo";
+  AppRegistry, Platform, View, Text, TouchableOpacity, StyleSheet,
+} from 'react-native';
+import {
+  AR, Asset, Constants, Location, Permissions,
+} from 'expo';
 // Let's alias ExpoTHREE.AR as ThreeAR so it doesn't collide with Expo.AR.
-import ExpoTHREE, { AR as ThreeAR, THREE } from "expo-three";
+import ExpoTHREE, { AR as ThreeAR, THREE } from 'expo-three';
 // Let's also import `expo-graphics`
 // expo-graphics manages the setup/teardown of the gl context/ar session, creates a frame-loop, and observes size/orientation changes.
 // it also provides debug information with `isArCameraStateEnabled`
-import { View as GraphicsView } from "expo-graphics";
-import relativePhotoDirectionsFromPhone from "./utils/RelativePhotoLocation";
-import TouchableView from "./TouchableView";
+import { View as GraphicsView } from 'expo-graphics';
+import relativePhotoDirectionsFromPhone from './utils/RelativePhotoLocation';
+import TouchableView from './TouchableView';
+import arupStyles from '../styles/arupStyles';
 
 export default class BasicARScene extends React.Component {
   state = {
@@ -23,14 +21,14 @@ export default class BasicARScene extends React.Component {
     heading: undefined,
     errorMessage: null,
     pins: [],
-    relativeDirections: undefined
+    relativeDirections: undefined,
   };
 
   componentWillMount() {
-    if (Platform.OS === "android" && !Constants.isDevice) {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         errorMessage:
-          "Oops, this will not work on Sketch in an Android emulator. Try it on your device!"
+          'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
       });
     } else {
       this._getLocationAsync();
@@ -38,15 +36,15 @@ export default class BasicARScene extends React.Component {
   }
 
   _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== "granted") {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
       this.setState({
-        errorMessage: "Permission to access location was denied"
+        errorMessage: 'Permission to access location was denied',
       });
     }
-    let location = await Location.getCurrentPositionAsync({});
+    const location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
-    let heading = await Location.getHeadingAsync({});
+    const heading = await Location.getHeadingAsync({});
     this.setState({ heading });
   };
 
@@ -58,8 +56,8 @@ export default class BasicARScene extends React.Component {
     const relativeDirections = relativePhotoDirectionsFromPhone(
       this.state.location.coords.latitude,
       this.state.location.coords.longitude,
-      this.props.navigation.getParam("pins"),
-      this.state.heading.trueHeading
+      this.props.navigation.getParam('pins'),
+      this.state.heading.trueHeading,
     );
 
     return (
@@ -71,9 +69,7 @@ export default class BasicARScene extends React.Component {
         >
           <GraphicsView
             style={{ flex: 9 }}
-            onContextCreate={options =>
-              this.onContextCreate(options, relativeDirections)
-            }
+            onContextCreate={options => this.onContextCreate(options, relativeDirections)}
             onRender={this.onRender}
             onResize={this.onResize}
             isArEnabled
@@ -83,10 +79,10 @@ export default class BasicARScene extends React.Component {
           />
         </TouchableView>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AddPin")}
+          style={arupStyles.blueButton}
+          onPress={() => navigation.navigate('AddPin')}
         >
-          <Text>Add Pin</Text>
+          <Text style={arupStyles.blueButtonText}>Add Pin</Text>
         </TouchableOpacity>
       </>
     );
@@ -100,18 +96,17 @@ export default class BasicARScene extends React.Component {
   }
 
   // When our context is built we can start coding 3D things.
-  onContextCreate = async (
-    { gl, scale: pixelRatio, width, height },
-    relativeDirections
-  ) => {
+  onContextCreate = async ({
+    gl, scale: pixelRatio, width, height,
+  }, relativeDirections) => {
     // This will allow ARKit to collect Horizontal surfaces
-    AR.setPlaneDetection({ Horizontal: "horizontal" });
+    AR.setPlaneDetection({ Horizontal: 'horizontal' });
     // Create a 3D renderer
     this.renderer = new ExpoTHREE.Renderer({
       gl,
       pixelRatio,
       width,
-      height
+      height,
     });
 
     // We will add all of our meshes to this scene.
@@ -126,15 +121,12 @@ export default class BasicARScene extends React.Component {
     const geometry = new THREE.CylinderGeometry(0.1, 0.1, 50, 12);
     // Simple color material
     const material = new THREE.MeshPhongMaterial({
-      color: 0xff0800
+      color: 0xff0800,
     });
 
-    console.log(
-      relativeDirections.length,
-      "<--length of array in basic AR scene"
-    );
+    console.log(relativeDirections.length, '<--length of array in basic AR scene');
 
-    relativeDirections.forEach(relativeDirection => {
+    relativeDirections.forEach((relativeDirection) => {
       // Combine our geometry and material
       this.cylinder = new THREE.Mesh(geometry, material);
       this.cylinder.position.x = relativeDirection.right;
@@ -149,7 +141,9 @@ export default class BasicARScene extends React.Component {
   };
 
   // When the phone rotates, or the view changes size, this method will be called.
-  onResize = ({ x, y, scale, width, height }) => {
+  onResize = ({
+    x, y, scale, width, height,
+  }) => {
     // Let's stop the function if we haven't setup our scene yet
     if (!this.renderer) {
       return;
@@ -172,9 +166,9 @@ export default class BasicARScene extends React.Component {
     }
 
     const size = this.renderer.getSize();
-    console.log("touch", { x, y, ...size });
+    console.log('touch', { x, y, ...size });
 
-    //const position = ThreeAR.improviseHitTest({x, y}); <- Good for general purpose: "I want a point, I don't care how"
+    // const position = ThreeAR.improviseHitTest({x, y}); <- Good for general purpose: "I want a point, I don't care how"
     // const { hitTest } = await AR.performHitTest(
     //   {
     //     x: x / size.width,
@@ -187,22 +181,22 @@ export default class BasicARScene extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10
+    justifyContent: 'center',
+    paddingHorizontal: 10,
   },
   button: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
   },
   countContainer: {
-    alignItems: "center",
-    padding: 10
+    alignItems: 'center',
+    padding: 10,
   },
   countText: {
-    color: "#FF00FF"
-  }
+    color: '#FF00FF',
+  },
 });
 
-AppRegistry.registerComponent("App", () => App);
+AppRegistry.registerComponent('App', () => App);
