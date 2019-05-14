@@ -13,7 +13,9 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
+    const { navigation } = this.props;
     this.fetchPins();
+    navigation.addListener('willFocus', this.fetchPins);
   }
 
   fetchPins = () => {
