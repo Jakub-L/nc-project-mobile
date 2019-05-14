@@ -1,41 +1,46 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Button, Dimensions, ScrollView, Linking
+  Text, View, Dimensions, ScrollView, Linking, Image,
 } from 'react-native';
-import Image from 'react-native-scalable-image';
+import ScaleableImage from 'react-native-scalable-image';
+import { convertIsoDate } from '../utils/pin-utils';
+import pinScreenStyle from '../styles/PinScreen-style';
 
 class PinScreen extends React.Component {
+  state = { imageLoading: false };
+
   render() {
-    const dimensions = Dimensions.get('window');
+    const { width } = Dimensions.get('window');
     const { navigation } = this.props;
-    const pin = navigation.getParam('pin');
+    const {
+      email, creator, timestamp, note, photo_url, user_photo,
+    } = navigation.getParam('pin');
     return (
-      <View>
-        <Image width={Dimensions.get('window').width} source={{ uri: pin.photo_url }} />
-        <ScrollView>
-          <Text>
-Posted by: {pin.creator}
-          </Text>
-<Text style={styles.email} onPress={() => Linking.openURL(`mailto:${pin.email}`) } >
-{pin.email}
-</Text>
-<Text>
-Date posted: {pin.timestamp}
-          </Text>
-          <Text>
-            {'\n'}
-            {pin.note}
-          </Text>
+      <View style={pinScreenStyle.container}>
+        {photo_url ? (
+          <ScaleableImage style={pinScreenStyle.image} width={width} source={{ uri: photo_url }} />
+        ) : (
+          <Text> </Text>
+        )}
+        <ScrollView style={pinScreenStyle.noteContainer}>
+          <Text style={pinScreenStyle.noteText}>{note}</Text>
+          <View style={pinScreenStyle.userFooter}>
+            <Image source={{ uri: user_photo }} style={pinScreenStyle.userAvatar} />
+            <View style={pinScreenStyle.userInfo}>
+              <Text style={pinScreenStyle.userName}>{creator}</Text>
+              <Text
+                style={pinScreenStyle.userEmail}
+                onPress={() => Linking.openURL(`mailto:${email}`)}
+              >
+                {email}
+              </Text>
+              <Text style={pinScreenStyle.userTimestamp}>{convertIsoDate(timestamp)}</Text>
+            </View>
+          </View>
         </ScrollView>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  email: {
-    color: 'blue',
-  },
-});
 
 export default PinScreen;

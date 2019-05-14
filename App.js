@@ -29,9 +29,10 @@ class WelcomeScreen extends React.Component {
 
   state = {
     fontLoaded: false,
-    email: 'Parker61@hotmail.com',
+
+    email: 'Trystan_Connelly@gmail.com',
     password: 'password',
-    emailDefault: 'Parker61@hotmail.com',
+    emailDefault: 'Trystan_Connelly@gmail.com',
     passwordDefault: 'password',
     attemptingLogin: false,
     loginFailed: false,
@@ -131,14 +132,15 @@ class WelcomeScreen extends React.Component {
           style={loginFailed ? welcomeScreenStyle.loginFailed : welcomeScreenStyle.textInput}
         />
         <TouchableOpacity
-          style={welcomeScreenStyle.button}
+          style={arupStyles.whiteButton}
           onPress={this.attemptLogin}
           activeOpacity={0.8}
+          disabled={attemptingLogin}
         >
           {attemptingLogin ? (
             <ActivityIndicator size="small" color={arupStyles.blueBg} />
           ) : (
-            <Text style={welcomeScreenStyle.buttonText}>Log in</Text>
+            <Text style={arupStyles.whiteButtonText}>Log in</Text>
           )}
         </TouchableOpacity>
       </KeyboardAvoidingView>
