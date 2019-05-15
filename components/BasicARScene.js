@@ -59,7 +59,7 @@ export default class BasicARScene extends React.Component {
     this.scene = new THREE.Scene();
     this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
     this.camera = new ThreeAR.Camera(width, height, 0.01, 1000);
-    const geometry = new THREE.CylinderGeometry(0.2, 0.2, 100, 12);
+    const geometry = new THREE.CylinderGeometry(0.5, 0.5, 100, 12);
     const material = new THREE.MeshPhongMaterial({
       color: 0xff0800,
     });

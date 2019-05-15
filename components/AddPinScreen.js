@@ -53,7 +53,7 @@ class AddPinScreen extends React.Component {
   };
 
   state = {
-    user: { user_id: null, creator: null, email: null },
+    user: { user_id: null, email: null, email: null },
     site: { site_id: 1, site_name: 'West Ardenborough' },
     selecting: false,
     photo: null,
@@ -126,6 +126,7 @@ class AddPinScreen extends React.Component {
       });
       const addedPin = data.pin;
       addedPin.creator = user.name;
+      addedPin.email = user.email;
       addedPin.user_photo = user.user_photo;
       addedPin.site_name = site.site_name;
       const addNewPin = navigation.getParam('addNewPin');
