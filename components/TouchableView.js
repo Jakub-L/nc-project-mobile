@@ -1,18 +1,16 @@
-// @flow
 import React from 'react';
 import { PanResponder, View } from 'react-native';
-import { PropTypes } from 'prop-types';
-
-/* global Alert */
+import PropTypes from 'prop-types';
 
 class TouchableView extends React.Component {
   static propTypes = {
-    onTouchesBegan: PropTypes.func.isRequired,
-    onTouchesMoved: PropTypes.func.isRequired,
-    onTouchesEnded: PropTypes.func.isRequired,
-    onTouchesCancelled: PropTypes.func.isRequired,
-    onStartShouldSetPanResponderCapture: PropTypes.func.isRequired,
+    onTouchesBegan: PropTypes.func,
+    onTouchesMoved: PropTypes.func,
+    onTouchesEnded: PropTypes.func,
+    onTouchesCancelled: PropTypes.func,
+    onStartShouldSetPanResponderCapture: PropTypes.func,
   };
+
   static defaultProps = {
     onTouchesBegan: () => {},
     onTouchesMoved: () => {},
@@ -21,58 +19,56 @@ class TouchableView extends React.Component {
     onStartShouldSetPanResponderCapture: () => true,
   };
 
-  buildGestures = () =>
-    PanResponder.create({
-      // onResponderTerminate: this.props.onResponderTerminate ,
-      // onStartShouldSetResponder: () => true,
-      onResponderTerminationRequest: this.props.onResponderTerminationRequest,
-      onStartShouldSetPanResponderCapture: this.props.onStartShouldSetPanResponderCapture,
-      // onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onPanResponderGrant: ({ nativeEvent }, gestureState) => {
-        const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit('touchstart', event);
-        this.props.onTouchesBegan(event);
-      },
-      onPanResponderMove: ({ nativeEvent }, gestureState) => {
-        const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit('touchmove', event);
-        this.props.onTouchesMoved(event);
-      },
-      onPanResponderRelease: ({ nativeEvent }, gestureState) => {
-        const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit('touchend', event);
-        this.props.onTouchesEnded(event);
-      },
-      onPanResponderTerminate: ({ nativeEvent }, gestureState) => {
-        const event = this._transformEvent({ ...nativeEvent, gestureState });
-        this._emit('touchcancel', event);
-
-        this.props.onTouchesCancelled
-          ? this.props.onTouchesCancelled(event)
-          : this.props.onTouchesEnded(event);
-      },
-    });
-
   componentWillMount() {
-    this._panResponder = this.buildGestures();
+    this.panResponder = this.buildGestures();
   }
 
-  _emit = (type, props) => {
+  buildGestures = () => PanResponder.create({
+    onResponderTerminationRequest: this.props.onResponderTerminationRequest,
+    onStartShouldSetPanResponderCapture: this.props.onStartShouldSetPanResponderCapture,
+    onPanResponderGrant: ({ nativeEvent }, gestureState) => {
+      const event = this.transformEvent({ ...nativeEvent, gestureState });
+      this.emit('touchstart', event);
+      this.props.onTouchesBegan(event);
+    },
+    onPanResponderMove: ({ nativeEvent }, gestureState) => {
+      const event = this.transformEvent({ ...nativeEvent, gestureState });
+      this.emit('touchmove', event);
+      this.props.onTouchesMoved(event);
+    },
+    onPanResponderRelease: ({ nativeEvent }, gestureState) => {
+      const event = this.transformEvent({ ...nativeEvent, gestureState });
+      this.emit('touchend', event);
+      this.props.onTouchesEnded(event);
+    },
+    onPanResponderTerminate: ({ nativeEvent }, gestureState) => {
+      const event = this.transformEvent({ ...nativeEvent, gestureState });
+      this.emit('touchcancel', event);
+
+      this.props.onTouchesCancelled
+        ? this.props.onTouchesCancelled(event)
+        : this.props.onTouchesEnded(event);
+    },
+  });
+
+  emit = (type, props) => {
     if (window.document && window.document.emitter) {
       window.document.emitter.emit(type, props);
     }
   };
 
-  _transformEvent = event => {
-    event.preventDefault = event.preventDefault || (_ => {});
-    event.stopPropagation = event.stopPropagation || (_ => {});
+  transformEvent = (event) => {
+    event.preventDefault = event.preventDefault || ((_) => {});
+    event.stopPropagation = event.stopPropagation || ((_) => {});
     return event;
   };
 
   render() {
-    const { children, id, style, ...props } = this.props;
+    const {
+      children, id, style, ...props
+    } = this.props;
     return (
-      <View {...props} style={[style]} {...this._panResponder.panHandlers}>
+      <View {...props} style={[style]} {...this.panResponder.panHandlers}>
         {children}
       </View>
     );

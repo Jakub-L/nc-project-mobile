@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View,
+  Text, TouchableOpacity, View,
 } from 'react-native';
 import Map from './Map';
 import homeScreenStyle from '../styles/HomeScreen-style';
@@ -10,7 +10,6 @@ import * as api from '../utils/api';
 class HomeScreen extends React.Component {
   state = {
     pins: [],
-    selectedPin: {},
   };
 
   componentDidMount() {
@@ -22,9 +21,11 @@ class HomeScreen extends React.Component {
   };
 
   findSelectedPin = (selectedPinID) => {
-    const selectedPinArray = this.state.pins.filter(pin => pin.pin_id === selectedPinID);
+    const { navigation } = this.props;
+    const { pins } = this.state;
+    const selectedPinArray = pins.filter(pin => pin.pin_id === selectedPinID);
     const pin = selectedPinArray[0];
-    this.props.navigation.navigate('Pin', { pin });
+    navigation.navigate('Pin', { pin });
   };
 
   addNewPin = (pin) => {
@@ -37,7 +38,6 @@ class HomeScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const { pins } = this.state;
-    const { selectedPin } = this.state;
 
     return (
       <View style={homeScreenStyle.container}>
@@ -45,7 +45,7 @@ class HomeScreen extends React.Component {
         <View style={homeScreenStyle.buttonContainer}>
           <TouchableOpacity
             style={arupStyles.blueButton}
-            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin, user: this.state.user })
+            onPress={() => navigation.navigate('AddPin', { addNewPin: this.addNewPin })
             }
             activeOpacity={0.8}
           >
@@ -64,17 +64,5 @@ class HomeScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-  map: {
-    flex: 2,
-  },
-});
 
 export default HomeScreen;

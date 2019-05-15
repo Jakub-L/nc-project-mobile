@@ -23,7 +23,7 @@ export default class BasicARScene extends React.Component {
   state = {
     location: undefined,
     heading: undefined,
-    arAvailable: false,
+    arAvailable: true,
   };
 
   async componentWillMount() {

@@ -7,8 +7,6 @@ import { convertIsoDate } from '../utils/pin-utils';
 import pinScreenStyle from '../styles/PinScreen-style';
 
 class PinScreen extends React.Component {
-  state = { imageLoading: false };
-
   render() {
     const { width } = Dimensions.get('window');
     const { navigation } = this.props;
