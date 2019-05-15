@@ -8,7 +8,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   photoButtonsContainer: {
-    flex: 1,
+    flex: 4,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-around',
@@ -20,7 +20,7 @@ export default StyleSheet.create({
     marginTop: 60,
   },
   noteField: {
-    flex: 1,
+    flex: 3,
     backgroundColor: arup.white,
     margin: 10,
     padding: 10,

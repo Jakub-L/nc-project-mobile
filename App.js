@@ -10,7 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { Font } from 'expo';
+import { Font, Permissions } from 'expo';
 import {
   BasicARScene, AddPinScreen, AddPhotoScreen, HomeScreen, PinScreen,
 } from './components';
@@ -29,18 +29,22 @@ class WelcomeScreen extends React.Component {
 
   state = {
     fontLoaded: false,
-    email: 'Shea.Hauck@hotmail.com',
-    password: 'password',
-    emailDefault: 'Shea.Hauck@hotmail.com',
-    passwordDefault: 'password',
+    email: '',
+    password: '',
+    emailDefault: '',
+    passwordDefault: '',
     attemptingLogin: false,
     loginFailed: false,
   };
 
   async componentDidMount() {
+    console.disableYellowBox = true;
     await Font.loadAsync({
       'times-new-roman': require('./assets/fonts/times-new-roman.ttf'),
     });
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    await Permissions.askAsync(Permissions.CAMERA);
+    await Permissions.askAsync(Permissions.LOCATION);
     await AsyncStorage.clear();
     this.setState({ fontLoaded: true });
   }
